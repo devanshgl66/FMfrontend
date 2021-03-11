@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container, Button } from "react-bootstrap";
+import { Row, Col, Container, Button, Image } from "react-bootstrap";
 import { LocalForm, Control } from "react-redux-form";
 import { Label } from "reactstrap";
 import Message from "./Message";
@@ -8,6 +8,8 @@ import { userRegister } from "../redux/actions/authAction";
 import Loader from './Loader'
 import ModalMessage from './ModalMessage'
 import {Link} from 'react-router-dom'
+import WebcamCapture from "./WebcamCapture";
+import Webcam from "react-webcam";
 const Register = (props) => {
   const dispatch = useDispatch()
   const CommonRegistration=(props)=>{
@@ -19,7 +21,7 @@ const Register = (props) => {
                 <Label htmlFor="image">Profile Pic:</Label>
                 <Control.file
                   type='file'
-                  model=".image"
+                  model=".profilePic"
                   id="image"
                   name="image"
                   onChange={(e) => {
@@ -118,8 +120,14 @@ function RegisterTeacher (props) {
     else {
       const msg={seterror,setloading,setsuccess}
       seterrorMessage("");
+      console.log(val)
       const teacher=JSON.parse(JSON.stringify(val)) 
         teacher.role=1  //1=TEACHER
+        // teacher.image=val.image[0]
+        console.log(teacher.image)
+        if(val.image && val.image.length>0)
+        teacher.image=val.image[0]
+        console.log(teacher)
         handleRegister(teacher,msg)
     }
   }
@@ -169,8 +177,8 @@ function RegisterStudent(props)  {
   const [error,seterror]=useState(null)
   const [loading,setloading]=useState(false)
   const [success,setsuccess]=useState(false)
-  const [errorMessage, seterrorMessage] = useState("");
-    async function StudentRegisterHandler(val, e) {
+  const [errorMessage, seterrorMessage] = useState("");    
+  async function StudentRegisterHandler(val, e) {
       e.preventDefault();
       if (val.password.length < 8)
         seterrorMessage("Password must be of length 8");
@@ -178,19 +186,82 @@ function RegisterStudent(props)  {
         seterrorMessage("Password do not Match");
       else if((val.rollNo).toString().length!=11)
         seterrorMessage("Roll no. does not exist");
+      else if(selectedImg.length<6)
+        seterrorMessage('Please at least select 6 photos')
       else {
         const msg={seterror,setloading,setsuccess}
         seterrorMessage("");
         const student=JSON.parse(JSON.stringify(val)) 
         student.role=0  //0=STUDENT
+        if(val.image && val.image.length>0)
+        student.image=val.image[0]
+        var photos=[]
+        for(var i=0;i<selectedImg.length;i++){
+          photos.push(imgSrc[selectedImg[i]])
+        }
+        // console.log(selectedImg)
+        student.images=photos
+        console.log(student)
         await handleRegister(student,msg)
-        console.log(success)
-
       }
     }
+    const [imgSrc, setImgSrc] = useState([]);
+    const [selectedImg, setselectedImg] = useState([])
+    const [styleImg, setstyleImg] = useState([])
+
+    const WebcamCapture = () => {
+      
+      function selectimg(i){
+        var temp=[...selectedImg]
+        var index=temp.indexOf(i)
+        if(index>-1){
+          temp.splice(index,1)
+          setselectedImg(temp)
+        }
+        else
+          setselectedImg([...selectedImg,i])
+        var tempStyle=[...styleImg]
+        if(styleImg[i].border=='none')
+          tempStyle[i]={...tempStyle[i],border:'2px solid black'}
+        else
+          tempStyle[i]={...tempStyle[i],border:'none'}
+        setstyleImg(tempStyle)
+        // console.log(selectedImg)
+      }
+      const webcamRef = React.useRef(null);
+    
+      const capture = React.useCallback(() => {
+        const imageSrc = webcamRef.current.getScreenshot({width: 512, height:512})
+        // (imgSrc.push(imageSrc));
+        setImgSrc([...imgSrc,imageSrc])
+        setstyleImg([...styleImg,{border:'none'}])
+      }, [webcamRef]);
+      const showImages=imgSrc.map((image,i)=>{        
+        return(
+            <Image onClick={()=>{selectimg(i)}}
+             src={image} style={{...styleImg[i],width:150,height:150}}/>
+           
+        )
+      })
+      return (
+        <>
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+          />
+          <button onClick={capture}>Capture photo</button>
+          {imgSrc && (
+            <>{showImages.map(im=>im)}</>
+            
+          )}
+        </>
+      );
+    };
+    
     return (
       <>
-      <Container>
+        <Container>
         <Row className="justify-content-md-center">
           <Col md={6} xs={12}>
             <h1>Student Register</h1>
@@ -224,6 +295,14 @@ function RegisterStudent(props)  {
                   className="form-control"
                   required
                 />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h4>Upload photos</h4>
+                <h6 className='text-muted'>Select 6 photos</h6>
+                <h6 className='text-muted'>Click a photo to select it</h6>
+                <WebcamCapture/>
               </Col>
             </Row>
               <Row>
