@@ -28,10 +28,12 @@ return blob;
 export const userRegister=(user={})=>async(dispatch,getState)=>{
     try{
       console.log(user)
-      console.log(user.image)
       let fd=new FormData();   
       for(var it in user)
         fd.append(it,user[it])
+      // console.log(user.profilePic)
+      if(user.profilePic)
+      fd.append('profilePic',user.profilePic[0])
       if(user.role==0){
         console.log(user.images.length)
         for(var i=0;i<user.images.length;i++){

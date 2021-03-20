@@ -51,26 +51,14 @@ const Register = (props) => {
             </Row>
             <Row className="form-group">
               <Col>
-                <Label htmlFor="firstname">Firstname</Label>
+                <Label htmlFor="firstname">Name</Label>
                 <Control.text
-                  model=".firstname"
-                  id="firstname"
-                  name="firstname"
-                  placeholder="firstname"
+                  model=".name"
+                  id="name"
+                  name="name"
+                  placeholder="name"
                   className="form-control"
                   required
-                />
-              </Col>
-            </Row>
-            <Row className="form-group">
-              <Col>
-                <Label htmlFor="lastname">LastName</Label>
-                <Control.text
-                  model=".lastname"
-                  id="lastname"
-                  name="lastname"
-                  className="form-control"
-                  placeholder="Last Name"
                 />
               </Col>
             </Row>
@@ -120,15 +108,13 @@ function RegisterTeacher (props) {
     else {
       const msg={seterror,setloading,setsuccess}
       seterrorMessage("");
-      console.log(val)
-      const teacher=JSON.parse(JSON.stringify(val)) 
-        teacher.role=1  //1=TEACHER
-        // teacher.image=val.image[0]
-        console.log(teacher.image)
-        if(val.image && val.image.length>0)
-        teacher.image=val.image[0]
-        console.log(teacher)
-        handleRegister(teacher,msg)
+      // console.log(val)
+      // const teacher=JSON.parse(JSON.stringify(val)) 
+      //   teacher.role=1  //1=TEACHER
+      //   if(val.image && val.image.length>0)
+      //   teacher.profilePic=val.profilePic
+      //   console.log(teacher)
+        handleRegister({...val,role:1},msg)
     }
   }
   return (
@@ -194,7 +180,7 @@ function RegisterStudent(props)  {
         const student=JSON.parse(JSON.stringify(val)) 
         student.role=0  //0=STUDENT
         if(val.image && val.image.length>0)
-        student.image=val.image[0]
+        student.profilePic=val.image[0]
         var photos=[]
         for(var i=0;i<selectedImg.length;i++){
           photos.push(imgSrc[selectedImg[i]])
@@ -202,7 +188,7 @@ function RegisterStudent(props)  {
         // console.log(selectedImg)
         student.images=photos
         console.log(student)
-        await handleRegister(student,msg)
+        await handleRegister({...val,role:0,images:photos},msg)
       }
     }
     const [imgSrc, setImgSrc] = useState([]);
@@ -292,6 +278,20 @@ function RegisterStudent(props)  {
                   id="branch"
                   name="branch"
                   placeholder="branch"
+                  className="form-control"
+                  required
+                />
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="yearOfStart">year of admission</Label>
+                <Control.text
+                  type='number'
+                  model=".yearOfStart"
+                  id="yearOfStart"
+                  name="yearOfStart"
+                  placeholder="yearOfStart"
                   className="form-control"
                   required
                 />
