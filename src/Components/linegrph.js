@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import * as d3 from d3;
+import * as d3 from 'd3';
 
 var height=600;
 var width=600;
@@ -11,7 +11,7 @@ var tooltip=d3.select('body')
 var arr=null;
 
 
-class BarChart extends Componenet 
+class BarChart extends Component 
 {
     componentDidMount()
     {

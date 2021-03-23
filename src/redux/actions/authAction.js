@@ -1,6 +1,5 @@
 import axios from "axios"
 import { USER_LOGIN_ERROR, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT } from "../ActionType"
-import cookie from 'react-cookies'
 // function to convert base64 image to image
 function b64toBlob(b64Data, contentType, sliceSize) {
   contentType = contentType || '';
@@ -82,6 +81,4 @@ export const userLogin=(email,password,role)=>async(dispatch,getState)=>{
 export const userLogout=()=>async(dispatch)=>{
   dispatch({type:USER_LOGOUT})
   await axios.delete('/user/logout')
-  cookie.remove('access_token')
-  cookie.remove('refresh_token')
 }
