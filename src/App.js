@@ -9,6 +9,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Experiment from './Components/Experiment';
 import { AddAttendanceForm } from './Components/MarkAttendance';
 import { SeeAttendanceForm } from './Components/SeeAttendance';
+import BarChart from './Components/linegraph/linegraph.component.js'
 function App() {
   return (
     <BrowserRouter>
@@ -17,6 +18,7 @@ function App() {
         <Container>
           
           <Route path='/' component={HomePage} exact/>
+          <BarChart></BarChart>
           <Route path='/login' render={(props)=><Login location={props.location} history={props.history} role={1}/>}/>
           <Route path='/register/0' render={(props)=><Register location={props.location} history={props.history} user='Student'/>}/>
           <Route path='/register/1' render={(props)=><Register location={props.location} history={props.history} user='Teacher'/>}/>

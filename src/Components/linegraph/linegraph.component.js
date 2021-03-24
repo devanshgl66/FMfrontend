@@ -1,4 +1,6 @@
 import React,{Component} from 'react';
+import {connect} from 'react-redux';
+import './linegraph.styles.css'
 import * as d3 from 'd3';
 
 var height=600;
@@ -9,19 +11,49 @@ var tooltip=d3.select('body')
                         .classed("tooltip",true);
 
 var arr=null;
+var self=null;
 
 
 class BarChart extends Component 
 {
     componentDidMount()
     {
-
-        // preparing pre-requisites for x and y axis
+        // arr=this.props.attendance;
+        arr=[
+            {
+                "Date": "6/1/20",
+                "TotalCases": 6282981
+            },
+            {
+                "Date": "6/2/20",
+                "TotalCases": 6403944
+            },
+            {
+                "Date": "6/3/20",
+                "TotalCases": 6522099
+            },
+            {
+                "Date": "6/4/20",
+                "TotalCases": 6649014
+            },
+            {
+                "Date": "6/5/20",
+                "TotalCases": 6779972
+            },
+            {
+                "Date": "6/6/20",
+                "TotalCases": 6915760
+            },
+            {
+                "Date": "6/7/20",
+                "TotalCases": 7027674
+            }]
+        //preparing pre-requisites for x and y axis
         var scalex=d3.scaleTime()
-                    .domain([new Date(2020,5,1),new Date(2020,8,12)])
+                    .domain([new Date(2020,5,1),new Date(2020,5,8)])
                     .range([padding,width-padding])
         var scaley=d3.scaleLinear()
-                .domain([0,35000000])
+                .domain([0,9000000])
                 .range([height-padding,padding])
         
         var xaxis=d3.axisBottom(scalex)
@@ -68,66 +100,58 @@ class BarChart extends Component
         this.drawgraph(scalex,scaley);
     }
 
-    drawgraph(scalex,scaley)
-    {
+    drawgraph = (scalex,scaley)=>{
+        self=this;
         d3.select("svg")
                 .selectAll("rect")
                 .data(arr)
                 .enter()
                 .append("circle")
-                .on('mousemove',changeradius1)
-                .on('touchstart',changeradius1)
-                .on('mouseout',changeradius2)
-                .on('touchend',changeradius2)
+                .on('mousemove',this.changeradius1)
+                .on('touchstart',this.changeradius1)
+                .on('mouseout',this.changeradius2)
+                .on('touchend',this.changeradius2)
                 .transition()
                 .duration(1500)
                 .attr("cx",d => {
-                    month=parseInt(d.Date.substring(0,1))-1
-                    date=parseInt(d.Date.substring(2,4).replace("/",""))
-                    //console.log(d.Date.substring(0,1)+" "+d.Date.substring(2,3)+" "+month+" "+date);
+                    var month=parseInt(d.Date.substring(0,1))-1
+                    var date=parseInt(d.Date.substring(2,3).replace("/",""))
                     return scalex(new Date(2020,month,date));
                 })
-                .attr("cy",d =>scaley(d[object]))
+                .attr("cy",d =>scaley(d["TotalCases"]))
                 .attr("r",5)
-                .attr("fill",color)
+                .attr("fill","White")
                 .attr("stroke","#000")
                 .attr("stroke-width","1.9") 
     }
 
-    changeradius1(d,i)
-    {
-        var x,y;
-        x=d3.event.x;
-        y=d3.event.y;
+    changeradius1(event,d,i){
         d3.select(this).attr("r",12)
-        showtooltip(d,i,d3.event);
+        self.showtooltip(d,i,event);
 
     }
 
-    changeradius2()
-    {
-        var x,y;
-        x=d3.event.x;
-        y=d3.event.y;
+   changeradius2(){
         d3.select(this).attr("r",5)
         tooltip.style("opacity",0)
     }
 
-    showtooltip(d,i,node)
-    {
+    showtooltip(d,i,node){
+            console.log(node.x - tooltip.node().offsetWidth/2 -5)
             tooltip.style("opacity",1)
             .style("left",node.x - tooltip.node().offsetWidth/2 -5 +"px")
             .style("top",node.y+25+"px")
             .html(
                 `
-                <p>Date: ${arr[i].Date}</p>
-                <p>Total Cases: ${arr[i].TotalCases}</p>
-                <p>Total Deaths: ${arr[i].TotalDeaths}</p>
-                <p>Total Recovery: ${arr[i].TotalCases}</p>
+                <p>Date: ${d.Date}</p>
+                <p>Total Cases: ${d.TotalCases}</p>
                 `)
     }
     render(){return<div ref="canvas"></div>}
 }
 
-export default BarChart;
+// const mapStateToProps= (state)=>({ 
+//     attendance:state.graphReducer.attendance 
+// })
 
+export default BarChart;

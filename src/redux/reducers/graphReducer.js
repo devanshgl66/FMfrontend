@@ -1,6 +1,6 @@
 import { SEE_ATTENDANCE,SEE_ATTENDANCE_LOADING,SEE_ATTENDANCE_ERROR } from "../ActionType"
 
-export const authReducer=(state={ loading:false,error:null,attendance:null},action)=>{
+export const graphReducer=(state={ loading:false,error:null,attendance:null},action)=>{
     switch(action.type){
         case SEE_ATTENDANCE_LOADING:
             return {...state,loading:true,error:null}
