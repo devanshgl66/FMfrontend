@@ -1,6 +1,15 @@
 import axios from "axios"
 import { USER_LOGIN_ERROR, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT } from "../ActionType"
+import cookie from 'react-cookies'
 // function to convert base64 image to image
+function divideProfilePic(profilePic){
+  var div=[]
+  while(profilePic.length>0){
+    div.push(profilePic.slice(0,3000))
+    profilePic=profilePic.slice(3000)
+  }
+  return div;
+}
 function b64toBlob(b64Data, contentType, sliceSize) {
   contentType = contentType || '';
   sliceSize = sliceSize || 512;
@@ -63,10 +72,16 @@ export const userLogin=(email,password,role)=>async(dispatch,getState)=>{
         const {data}= await axios.post('/users/login/'+role,({email,password}))
         const user=data.User
         user.role=role
-        console.log(user)
-        
+        //breaking profile pic and storing it in cookie
+        var divProfilePic=divideProfilePic(user.profilePic)
+        divProfilePic.forEach((a,index)=>{
+          cookie.save(`profilePic${index}`,a,{path:'/',secure:true})
+        })
         dispatch({type:USER_LOGIN_SUCCESS,payload:user})
-        return true
+        user.profilePic=undefined
+        cookie.save('user',user,{path:'/',secure:true});
+        
+        // return true
     }catch (error) {
         dispatch({
           type: USER_LOGIN_ERROR,
@@ -75,10 +90,21 @@ export const userLogin=(email,password,role)=>async(dispatch,getState)=>{
               ? error.response.data.message
               : error.message,
         });
-        return false
+        // return false
       }
 }
-export const userLogout=()=>async(dispatch)=>{
+export const userLogout=({role})=>async(dispatch)=>{
   dispatch({type:USER_LOGOUT})
-  await axios.delete('/user/logout')
+  var cookies=cookie.loadAll()
+  // console.log(cookies)
+  Object.keys(cookies).forEach(cook => {
+    if(cook.startsWith('profilePic'))
+      cookie.remove(cook,{path:'/'})
+  });
+  cookie.remove('user',{path:'/'})
+  try{
+    return await axios.delete(`/users/logout/${role}`)
+  }catch(err){
+    console.log(err)
+  }
 }

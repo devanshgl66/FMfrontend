@@ -5,8 +5,9 @@ import { userLogin } from '../redux/actions/authAction'
 import {Link} from 'react-router-dom'
 import Loader from './Loader' 
 import Message from './Message'
-const Login = ({location,history,role}) => {
+const Login = ({location,history}) => {
     // const role=0
+    const role=parseInt(location.pathname.split('/')[2])
     const dispatch = useDispatch()
     const [email, setemail] = useState('')
     const [password, setpassword] = useState('')
@@ -16,6 +17,8 @@ const Login = ({location,history,role}) => {
     }
     const auth = useSelector(state => state.auth)
         const {loading,error,user}=auth
+        // console.log(user)
+        // console.log('hlo')
     const redirect=location.search?location.search.split('redirec=')[1]:'/'
     useEffect(() => {
         if(user)
@@ -27,7 +30,7 @@ const Login = ({location,history,role}) => {
         <Col md={6} xs={12}>
             {error&&<Message variant='danger'>{error}</Message>}
             {loading&&<Loader/>}
-            <h1>{role===0?'Student':'Teacher'} Login</h1>
+            <h1>{role===0?'Student':role===1?'Teacher':'Department'} Login</h1>
             <Form onSubmit={loginHandler}>
                 <Form.Group controlId='email'>
                     <Form.Label>Email</Form.Label>

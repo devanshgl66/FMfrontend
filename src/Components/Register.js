@@ -345,9 +345,10 @@ function RegisterStudent(props)  {
         else
           msg.seterror(err)
 }
+  const role=parseInt(props.location.pathname.split('/')[2])
   return (
     <div>
-      {props.user=='Student'?<RegisterStudent />:<RegisterTeacher/>}
+      {role==0?<RegisterStudent />:<RegisterTeacher/>}
     </div>
   );
 };

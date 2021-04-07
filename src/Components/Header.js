@@ -1,21 +1,100 @@
-import React from 'react'
-import {Row,Col} from 'react-bootstrap'
-const Header = (props) => {
-    return (
-        <header style={{backgroundColor:'violet'}}>
-            <Row>
-                <Col md={9}>
-                    Name of project
-                </Col>
-                {/* If login then show next component */}
-                <Col>
-                    <image style={{borderRadius:'50%'}} src={props.profilePic} alt='profile pic'/>
-                </Col>
-            </Row>
-            
-           
-        </header>
-    )
-}
+import React, { useState } from "react";
+import { LinkContainer } from "react-router-bootstrap";
+import { Navbar, Nav, Container, NavDropdown, Dropdown } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogout } from "../redux/actions/authAction";
+import Loader from './Loader'
+import Message from './Message'
+const Header = () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  // const user={}
+  const [loading, setloading] = useState(undefined)
+  const logoutHandler = () => {
+    setloading(false)
+    dispatch(userLogout({ role: user.role }));
+    setloading(true)
+  };
+  return (
+    <header>
+      {/* {loading===true&&<Message variant='success'>You are logout</Message>} */}
+      {loading===false&&<Loader/>}
+      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+        {/* Container removed in below line */}
+        <Container fluid>
+          <LinkContainer to="/">
+            <Navbar.Brand href="/">
+              <img
+                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                src="logo192.png"
+                alt="pending logo"
+              />
+              Name of project
+            </Navbar.Brand>
+          </LinkContainer>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ml-auto">
+              {/* <LinkContainer to="/cart">
+                <Nav.Link>
+                  <i className="fas fa-shopping-cart" />
+                  Cart
+                </Nav.Link>
+              </LinkContainer> */}
+              {user ? (
+                <NavDropdown title={
+                <span className="pull-left">
+                  {user.profilePic?
+                    <img className="thumbnail-image" 
+                        src={user.profilePic} 
+                        alt="user pic"
+                    />
+                    :
+                    <i className="fa fa-user"/>
+                  }
+                {' '+user.name}
+                </span>}>
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <>
+                <NavDropdown title="Sign in" id="collasible-nav-dropdown">
+        <NavDropdown.Item href="/login/0">Student</NavDropdown.Item>
+        <NavDropdown.Item href="/login/1">teacher</NavDropdown.Item>
+        <NavDropdown.Item href="/login/2">Department</NavDropdown.Item>
+      </NavDropdown>
+                  <Dropdown>
+                    <Dropdown.Toggle id="dropdown-basic" >
+                      <i className="fas fa-user" />
+                      Register
+                    </Dropdown.Toggle>
 
-export default Header
+                    <Dropdown.Menu>
+                      <Dropdown.Item>
+                        <LinkContainer to="/register/0">
+                          <Nav.Link>Student</Nav.Link>
+                        </LinkContainer>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <LinkContainer to="/register/1">
+                          <Nav.Link>Teacher</Nav.Link>
+                        </LinkContainer>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </header>
+  );
+};
+
+export default Header;

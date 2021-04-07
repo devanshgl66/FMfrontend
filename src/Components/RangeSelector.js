@@ -1,33 +1,36 @@
-import React, { useState } from 'react'
-import { Button, Col, Row } from 'react-bootstrap'
+import React, { useState } from "react";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Control } from "react-redux-form";
-import { Label } from 'reactstrap'
-
+import { Label } from "reactstrap";
 
 //Rest of code is in homepage file
 
+const RangeSelector = ({ fields, setFields,pos }) => {
+  // const [fields, setFields] = useState([]);
 
-const RangeSelector=({fields,setFields})=>{
-    // const [fields, setFields] = useState([{ value: null }]);
+  function handleChange(i, position, event) {
+    const values = JSON.parse(JSON.stringify(fields));
+    values[pos][i][position].value = event.target.value;
 
-  function handleChange(i, event) {
-    const values = [...fields];
-    values[i].value = event.target.value;
     setFields(values);
   }
-
+  // console.log(pos)
+  // console.log(fields)
   function handleAdd() {
-    const values = [...fields];
-    values.push({ value: null });
-    values.push({ value: null });
+    // alert(pos)
+    const values = JSON.parse(JSON.stringify(fields));
+    values[pos].push({
+      starting: { value: null },
+      ending: { value: null },
+    });
+    // console.log(values)
     setFields(values);
   }
   function handleRemove(i) {
-    const values = [...fields];
-    values.splice(i-1, 2);
+    const values = JSON.parse(JSON.stringify(fields));
+    values[pos].splice(i, 1);
     setFields(values);
   }
-
   return (
     <>
       {/* <h1>Hello CodeSandbox</h1> */}
@@ -35,32 +38,60 @@ const RangeSelector=({fields,setFields})=>{
       <button type="button" onClick={() => handleAdd()}>
         Add range
       </button>
-
-      {fields.map((field, idx) => {
+      <br/>
+      {fields[pos].map((field, idx) => {
+        // console.log(field)
         return (
-            
           <span key={`${field}-${idx}`}>
-              {idx%2==0?<input
-              type="number"
-              placeholder="Starting Roll no."
-              value={field.value || ""}
-              onChange={e => handleChange(idx, e)}
-              required
-            />:<><input
-              type="number"
-              placeholder="Ending Roll no."
-              value={field.value || ""}
-              onChange={e => handleChange(idx, e)}
-              required
-            /> <button type="button" onClick={() => handleRemove(idx)}>
-              X
-            </button>
-            </>}
-           
+            {
+              <>
+                <input
+                  type="number"
+                  placeholder="Starting Roll no."
+                  value={field.starting.value || ""}
+                  onChange={(e) => handleChange(idx, "starting", e)}
+                  required
+                />{" "}
+                <input
+                  type="number"
+                  placeholder="Ending Roll no."
+                  value={field.ending.value || ""}
+                  onChange={(e) => handleChange(idx, "ending", e)}
+                  required
+                />{" "}
+                <button type="button" as='span' onClick={() => handleRemove(idx)}>
+                  X
+                </button>
+              </>
+            }
           </span>
         );
       })}
     </>
   );
+};
+function getListofRollNo(fields) {
+  var roll = fields.map((f) => {
+    var r={};
+    r.starting=parseInt(f.starting.value);
+    r.ending=parseInt(f.ending.value);
+    return r;
+  });
+  // var roll = fields;
+  // console.log(roll);
+  var result = [];
+  for (var i = 0; i < roll.length; i++) {
+    var x = Array.from(
+      new Array(roll[i].ending - roll[i].starting + 1),
+      (_, j) => j + roll[i].starting
+    );
+    result = result.concat(x);
+  }
+  result = result.sort((a, b) => a - b);
+  //removing duplicate entries
+  result = new Set(result);
+  result = [...result];
+  // console.log(result)
+  return result;
 }
-export default RangeSelector
+export {RangeSelector,getListofRollNo};

@@ -71,9 +71,9 @@ export const AddAttendanceForm=(props)=>{
         msg.setloading(true)
 
         //DISPATCH THING HERE
-        console.log(val)
+        // console.log(val)
         const err=await dispatch(markAttendance(val))
-        console.log(err)
+        console.error(err)
         msg.setloading(false)
         if(err==null)
             msg.setsuccess(true)
