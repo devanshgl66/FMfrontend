@@ -6,10 +6,8 @@ import Login from './Components/Login'
 
 import { Container } from 'react-bootstrap';
 import { BrowserRouter, Route } from 'react-router-dom';
-import Experiment from './Components/Experiment';
 import { AddAttendanceForm } from './Components/MarkAttendance';
 import { SeeAttendanceForm } from './Components/SeeAttendance';
-import Temp from './Components/Temp';
 import AddClass from './Components/AddClass';
 import ShowAllClass from './Components/ShowAllClass';
 import DepttPage from './Screens/DepttPage';
@@ -19,7 +17,7 @@ function App() {
     <BrowserRouter>
       <Header/>
       <main className=''>
-        <Container>
+        <Container fluid>
           {/* <Temp/> */}
           <Route path='/' component={HomePage} exact/>
           {/* <BarChart></BarChart> */}
