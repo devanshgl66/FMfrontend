@@ -8,15 +8,15 @@ import { Container } from 'react-bootstrap';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { AddAttendanceForm } from './Components/MarkAttendance';
 import { SeeAttendanceForm } from './Components/SeeAttendance';
-import AddClass from './Components/AddClass';
-import ShowAllClass from './Components/ShowAllClass';
 import DepttPage from './Screens/DepttPage';
 import { useSelector } from 'react-redux';
+import TeacherPage from './Screens/TeacherPage';
 // import BarChart from './Components/linegraph/linegraph.component.js'
 function App() {
   const {user}  = useSelector(state => state.auth)
   // console.log(user)
   const userRoute={
+    1:<Route path='/teacher' render={(props)=><TeacherPage/>}/>,
     2:<Route path='/deptt' render={(props)=><DepttPage/>}/>
   }
   function DispUserRoute({state}){

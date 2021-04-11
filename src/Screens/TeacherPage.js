@@ -1,37 +1,31 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import {
   ProSidebar,
   Menu,
   MenuItem,
   SubMenu,
   SidebarHeader,
-  SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
 import {
   FaTachometerAlt,
   FaGem,
-  FaList,
-  FaGithub,
   FaRegLaughWink,
-  FaHeart,
 } from "react-icons/fa";
-import { Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 import sidebarBg from "../bg1.jpg";
 import "../NavStyle.scss";
 import AddClass from "../Components/AddClass";
 import ShowAllClass from "../Components/ShowAllClass";
-import DeptProfile from "../Components/profile/Dept";
-// import '../NavStyle.css'
-const DepttPage = () => {
+import TeacherProfile from "../Components/profile/Teacher";
+const TeacherPage = () => {
   const [comp, setcomp] = useState("dashboard");
   const [particularClass, setparticularClass] = useState(null);
   const compEnum = {
     dashboard: <h1>DashBoard</h1>,
     addClass: <AddClass Class={null} />,
     editClass: <AddClass Class={particularClass} />,
-    profile: <DeptProfile />,
+    profile: <TeacherProfile />,
   };
   function DispComponent({ state }) {
     return <>{compEnum[state]}</>;
@@ -88,4 +82,4 @@ const DepttPage = () => {
     </Row>
   );
 };
-export default DepttPage;
+export default TeacherPage;

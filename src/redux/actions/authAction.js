@@ -96,9 +96,10 @@ export const updateUser = (user) => async (dispatch, getState) => {
     fd.append("profilePic", blob);
 
     const { data } = await axios.put("/users/" + user.role, fd);
-    user = data;
-    localStorage.setItem('user',JSON.stringify(user))
-    await dispatch({ type: USER_UPDATE_PROFILE, payload: user });
+    const newuser = data;
+    newuser.role=user.role
+    localStorage.setItem('user',JSON.stringify(newuser))
+    await dispatch({ type: USER_UPDATE_PROFILE, payload: newuser });
     return null;
   } catch (error) {
     const errorStr =
@@ -121,10 +122,6 @@ export const userLogin = (email, password, role) => async (
     const user = data.User;
     user.role = role;
     //breaking profile pic and storing it in cookie
-    var divProfilePic = divideProfilePic(user.profilePic);
-    divProfilePic.forEach((a, index) => {
-      localStorage.setItem(`profilePic${index}`, a);
-    });
     dispatch({ type: USER_LOGIN_SUCCESS, payload: user });
     localStorage.setItem("user", JSON.stringify(user));
 

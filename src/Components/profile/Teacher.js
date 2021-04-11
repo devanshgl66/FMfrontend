@@ -8,7 +8,7 @@ import Avatar from 'react-avatar-edit'
 import Loader from '../Loader'
 import ModalMessage from '../ModalMessage'
 import { updateUser } from '../../redux/actions/authAction';
-const DeptProfile=(props)=>{
+const TeacherProfile=(props)=>{
   const dispatch = useDispatch()
   const [error,seterror]=useState(null)
   const [loading,setloading]=useState(false)
@@ -34,7 +34,7 @@ const DeptProfile=(props)=>{
     async function updateProfile(value){
       const msg={seterror,setloading,setsuccess}
       seterrorMessage("");
-        const val={...value,role:2,profilePic:preview}
+        const val={...value,role:1,profilePic:preview}
         msg.setloading(true)
         const err=await dispatch(updateUser(val))
         msg.setloading(false)
@@ -91,22 +91,7 @@ const DeptProfile=(props)=>{
                 />
               </Col>
             </Row>
-            <Row className="form-group">
-              <Col>
-                <Label htmlFor="branch">Branch Code</Label>
-                <Control.text
-                  type='number'
-                  model=".branch"
-                  id="branch"
-                  name="branch"
-                  placeholder="branch"
-                  className="form-control"
-                  required
-                  defaultValue={user.branch}
-                  disabled={true}
-                />
-              </Col>
-            </Row>
+            
             <Row>
               <Col>
                 {errorMessage.length > 0 ? (
@@ -134,4 +119,4 @@ const DeptProfile=(props)=>{
         </>
     )
 }
-export default DeptProfile;
+export default TeacherProfile;
