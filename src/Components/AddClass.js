@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { RangeSelector, getListofRollNo } from "./RangeSelector";
 import Loader from "./Loader";
 import ModalMessage from "./ModalMessage";
-import { addClass } from "../redux/actions/classAction";
+import { addClass, deleteClass, editClass } from "../redux/actions/classAction";
 import { Link } from "react-router-dom";
+function rangeFromRollNo(rollNo){
+  const range=[]
+  rollNo.sort((a,b)=>a-b)
+  if(!rollNo|| rollNo.length===0)
+    return range;
+  var i,start=rollNo[0];
+  for(i=1;i<rollNo.length;i++){
+    if(rollNo[i]==rollNo[i-1]+1)
+      continue;
+    else{
+      range.push({starting:{value:start.toString()},ending:{value:rollNo[i-1].toString()}})
+      start=rollNo[i];
+    }
+  }
+  range.push({starting:{value:start.toString()},ending:{value:rollNo[i-1].toString()}})
+  return range;
+}
 const AddSubject = ({ fields, setFields, pos }) => {
   // const [fields, setFields] = useState([]);
 
@@ -42,7 +59,7 @@ const AddSubject = ({ fields, setFields, pos }) => {
         Add Subject
       </button>
       <br />
-      {fields[pos].map((field, idx) => {
+      {fields[pos]&&fields[pos].map((field, idx) => {
         // console.log(field)
         return (
           <span key={`${field}-${idx}`}>
@@ -173,7 +190,7 @@ const AddSection = ({
     </>
   );
 };
-const AddClass = () => {
+const AddClass = ({Class}) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth); //for getting branch Code
   const [section, setsection] = useState([]);
@@ -183,6 +200,23 @@ const AddClass = () => {
   const [error, seterror] = useState(null);
   const [loading, setloading] = useState(false);
   const [success, setsuccess] = useState(false);
+  const [showMessage,setShowMessage]=useState('addClass')
+  useEffect(() => {
+    var Section=[],RollNo=[],Attendance=[];
+    if(Class){
+    Class.section.forEach((sec,idx)=>{
+      var range=rangeFromRollNo(sec.students)
+      Section.push({name:{value:sec.name},students:{pos:idx},attendance:{pos:idx}})
+      RollNo.push(range)
+      Attendance.push(sec.attendance)
+    })
+    setsection(Section)
+    setrollNo(RollNo)
+    setattendance(Attendance)
+    setyearOfStart(Class.yearOfStart)
+    setShowMessage('editClass')
+  }
+  }, [Class])
   const handleSubmit = async (e) => {
     //embedding rollno and attending inside section
     const finalSection = section.map((sec) => {
@@ -192,18 +226,16 @@ const AddClass = () => {
       sec.name=sec.name.value
       return sec;
     });
+    
     const class1 = {
       branchCode: user.branch,
       yearOfStart,
       section: finalSection,
     };
-    console.log(section)
-    console.log(rollNo)
-    console.log(attendance)
 
-    setrollNo([])
-    setattendance([])
-    setsection([])
+    // setrollNo([])
+    // setattendance([])
+    // setsection([])
     // e.preventDefault();
     const msg = { seterror, setloading, setsuccess };
     // seterrorMessage("");
@@ -211,10 +243,10 @@ const AddClass = () => {
 
     //DISPATCH THING HERE
     // console.log(val)
-    const response = await dispatch(addClass(class1));
+     const response = Class==null?await dispatch(addClass(class1)):await dispatch(editClass(class1))
+   
     console.log(response)
-    setTimeout(() => {
-        msg.setloading(false);
+    msg.setloading(false);
     if (response.success === true){
         if(response.error)
             msg.setsuccess(response.error)
@@ -222,21 +254,45 @@ const AddClass = () => {
             msg.setsuccess(true)
     }
     else msg.seterror(response.err);
-    console.log(error)
-    console.log(success)
-    }, 1000);
-    console.log('hlo')
+    // console.log(error)
+    // console.log(success)
   };
+  async function removeClass(e){
+    const class1={branchCode:Class.branchCode,yearOfStart:Class.yearOfStart}
+    // console.log(class1)
+    const msg = { seterror, setloading, setsuccess };
+    // seterrorMessage("");
+    msg.setloading(true);
+
+    //DISPATCH THING HERE
+    // console.log(val)
+     const response = await dispatch(deleteClass(class1))
+   
+    console.log(response)
+    msg.setloading(false);
+    if (response.success === true){
+        if(response.error)
+            msg.setsuccess(response.error)
+        else
+            msg.setsuccess(true)
+    }
+    else msg.seterror(response.err);
+    setShowMessage('deleteClass')
+    // console.log(error)
+    // console.log(success)
+  }
+  const message={
+    addClass:<>Class is added. Go to <Link to={`/`}>home</Link> page</>,
+    editClass:<>Class edited</>,
+    deleteClass:<>Class deleted.</>
+  }
   return (
     <>
-      <Container>
-        <Row className="justify-content-md-center">
-          <Col md={8} xs={12}>
-            <h1>Add Class</h1>
+            {Class===null?<h1>Add Class</h1>:<h1>Edit Class</h1>}
             <Form
               onSubmit={(e) => {
                 e.preventDefault();
-                handleSubmit();
+                handleSubmit()
               }}
             >
               <Form.Group controlId="branch Code">
@@ -254,6 +310,7 @@ const AddClass = () => {
                   value={yearOfStart}
                   onChange={(e) => setyearOfStart(e.target.value)}
                   required
+                  disabled={Class!==null}
                 />
               </Form.Group>
               <AddSection
@@ -264,11 +321,9 @@ const AddClass = () => {
                 attendance={attendance}
                 setattendance={setattendance}
               />
-              <Button type="submit">Add Class</Button>
+              <Button type="submit">{Class===null?<h3>Add Class</h3>:<h3>Edit Class</h3>}</Button>
+              {Class===null?<></>:<Button onClick={()=>removeClass()}><h3>Remove Class</h3></Button>}
             </Form>
-          </Col>
-        </Row>
-      </Container>
       {loading ? (
         <ModalMessage
           isOpen={loading}
@@ -295,7 +350,7 @@ const AddClass = () => {
             header="Registration"
             variant="success"
           >
-            Class is added. Go to <Link to={`/`}>home</Link> page
+            {message[showMessage]}
             <br />
             {success}
           </ModalMessage>
@@ -303,7 +358,6 @@ const AddClass = () => {
       ) : (
         <></>
       )}
-      <Row></Row>
     </>
   );
 };

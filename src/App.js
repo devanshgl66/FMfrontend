@@ -11,8 +11,17 @@ import { SeeAttendanceForm } from './Components/SeeAttendance';
 import AddClass from './Components/AddClass';
 import ShowAllClass from './Components/ShowAllClass';
 import DepttPage from './Screens/DepttPage';
+import { useSelector } from 'react-redux';
 // import BarChart from './Components/linegraph/linegraph.component.js'
 function App() {
+  const {user}  = useSelector(state => state.auth)
+  // console.log(user)
+  const userRoute={
+    2:<Route path='/deptt' render={(props)=><DepttPage/>}/>
+  }
+  function DispUserRoute({state}){
+    return <>{userRoute[state]}</>
+  }
   return (
     <BrowserRouter>
       <Header/>
@@ -25,9 +34,9 @@ function App() {
           <Route path='/register' render={(props)=><Register location={props.location} history={props.history}/>}/>
           <Route path='/markAttendance' render={(props)=><AddAttendanceForm  location={props.location} history={props.history} user='Teacher'/>}/>
           <Route path='/seeAttendance' render={(props)=><SeeAttendanceForm  location={props.location} history={props.history} user='Teacher'/>}/>
-          <Route path='/addClass' render={(props)=><AddClass/>}/>
-          <Route path='/temp' render={(props)=><ShowAllClass/>}/>
-          <Route path='/deptt' render={(props)=><DepttPage/>}/>
+          {/* <Route path='/addClass' render={(props)=><AddClass/>}/>
+          <Route path='/temp' render={(props)=><ShowAllClass/>}/> */}
+          {user?<DispUserRoute state={user.role}/>:<></>}
         </Container>
       </main>
     </BrowserRouter>

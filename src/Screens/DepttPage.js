@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Children, useState } from "react";
 import {
   ProSidebar,
   Menu,
@@ -16,22 +16,30 @@ import {
   FaRegLaughWink,
   FaHeart,
 } from "react-icons/fa";
+import {Container,Row,Col} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import sidebarBg from "../bg1.jpg";
 import "../NavStyle.scss";
+import AddClass from "../Components/AddClass";
+import ShowAllClass from "../Components/ShowAllClass";
+import DeptProfile from "../Components/profile/Dept";
 // import '../NavStyle.css'
-const DepttPage = () => {
-  const [rtl, setRtl] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const [image, setImage] = useState(true);
-  const [toggled, setToggled] = useState(false);
-
-  const handleToggleSidebar = (value) => {
-    setToggled(value);
-  };
+const DepttPage= () => {
+  const [comp, setcomp] = useState('dashboard')
+  const [particularClass, setparticularClass] = useState(null)
+  const compEnum={
+    dashboard:<h1>DashBoard</h1>,
+    addClass:<AddClass Class={null}/>,
+    editClass:<AddClass Class={particularClass}/>,
+    profile:<DeptProfile/>
+  }
+  function DispComponent({state}){
+    return <>{compEnum[state]}</>
+  }
   return (
-    <div className="app">
-      <ProSidebar
+      <Row>
+        <Col md='auto'>
+        <ProSidebar
         image={sidebarBg}
       >
         <SidebarHeader>
@@ -54,19 +62,17 @@ const DepttPage = () => {
         <SidebarContent>
           <Menu iconShape="circle">
             <MenuItem icon={<FaTachometerAlt />}>Dashboard</MenuItem>
-            <MenuItem icon={<FaGem />}> Components</MenuItem>
+            <MenuItem icon={<FaGem />} onClick={()=>setcomp('profile')}> Profile</MenuItem>
           </Menu>
           <Menu iconShape="circle">
             <SubMenu
-              suffix={<span className="badge yellow">3</span>}
               title="Manage Classes"
               icon={<FaRegLaughWink />}
             >
-              <MenuItem> 
-              <Link to='/'>Add Class</Link>
-              </MenuItem>
-              <MenuItem> 2</MenuItem>
-              <MenuItem> 3</MenuItem>
+              <MenuItem onClick={()=>setcomp('addClass')}>Add Class</MenuItem>
+              <SubMenu  title={'Edit Class'}>
+                <ShowAllClass  particularClass={particularClass} setparticularClass={setparticularClass}onClick={()=>setcomp('editClass')}/>
+              </SubMenu>
             </SubMenu>
             <SubMenu
               prefix={<span className="badge gray">3</span>}
@@ -112,8 +118,23 @@ const DepttPage = () => {
             </div> */}
         </SidebarFooter>
       </ProSidebar>
-    </div>
+        </Col>
+        <Col>
+            <DispComponent state={comp}/>
+        </Col>
+      </Row>
   );
 };
-
+const DepttPage2=()=>{
+  return(
+    <Row>
+      <Col>
+        col1
+      </Col>
+      <Col>
+        col2
+      </Col>
+    </Row>
+  )
+}
 export default DepttPage;

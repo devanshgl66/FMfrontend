@@ -48,6 +48,7 @@ const Header = () => {
                     <img className="thumbnail-image" 
                         src={user.profilePic} 
                         alt="user pic"
+                        style={{height:'75px',width:'75px'}}
                     />
                     :
                     <i className="fa fa-user"/>
@@ -68,25 +69,10 @@ const Header = () => {
         <NavDropdown.Item href="/login/1">teacher</NavDropdown.Item>
         <NavDropdown.Item href="/login/2">Department</NavDropdown.Item>
       </NavDropdown>
-                  <Dropdown>
-                    <Dropdown.Toggle id="dropdown-basic" >
-                      <i className="fas fa-user" />
-                      Register
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item>
-                        <LinkContainer to="/register/0">
-                          <Nav.Link>Student</Nav.Link>
-                        </LinkContainer>
-                      </Dropdown.Item>
-                      <Dropdown.Item>
-                        <LinkContainer to="/register/1">
-                          <Nav.Link>Teacher</Nav.Link>
-                        </LinkContainer>
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+      <NavDropdown title="Register" id="collasible-nav-dropdown">
+        <NavDropdown.Item href="/register/0">Student</NavDropdown.Item>
+        <NavDropdown.Item href="/register/1">teacher</NavDropdown.Item>
+      </NavDropdown>
                 </>
               )}
             </Nav>

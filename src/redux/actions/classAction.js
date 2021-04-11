@@ -16,6 +16,37 @@ export const addClass = (class1) => async (dispatch) => {
       return { err: errorStr, success: false };
     }
   };
+  export const editClass = (class1) => async (dispatch) => {
+    try {
+      const { data } = await axios.put("/class/addClass", class1);
+      // console.log(data)
+      // await dispatch({ type: ADD_CLASS_SUCCESS, payload: data });
+      return { ...data, success: true };
+    } catch (error) {
+      const errorStr =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      // await dispatch({ type: ADD_CLASS_ERROR, paylaod: errorStr });
+      return { err: errorStr, success: false };
+    }
+  };
+  export const deleteClass = (class1) => async (dispatch) => {
+    try {
+      // console.log(class1)
+      const { data } = await axios.post("/class/deleteClass", class1);
+      // console.log(data)
+      // await dispatch({ type: ADD_CLASS_SUCCESS, payload: data });
+      return { ...data, success: true };
+    } catch (error) {
+      const errorStr =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      // await dispatch({ type: ADD_CLASS_ERROR, paylaod: errorStr });
+      return { err: errorStr, success: false };
+    }
+  };
   export const dropDown=(param)=>async (dispatch)=>{
     try {
       const {data}=await axios.get('/class/get_data',{params:param})

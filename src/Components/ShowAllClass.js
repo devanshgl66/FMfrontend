@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
+import { MenuItem } from 'react-pro-sidebar'
 import { useDispatch, useSelector } from 'react-redux'
 import { dropDown, viewClass } from '../redux/actions/classAction'
 import Loader from './Loader'
 
-const ShowAllClass = () => {
+const ShowAllClass = ({particularClass, setparticularClass,onClick}) => {
     const [classes, setclasses] = useState([])
     const [loading, setloading] = useState(true)
     const [error,seterror]=useState(null)
     const {user} = useSelector(state => state.auth)
-    const [particularClass, setparticularClass] = useState(null)
+    // const [particularClass, setparticularClass] = useState(null)
     const dispatch = useDispatch()
     useEffect(() => {
         async function f(){var param={
@@ -29,26 +30,27 @@ const ShowAllClass = () => {
         var Class=await dispatch(viewClass({branchCode:user.branch,yearOfStart:cl}))
         // console.log(Class)
         if(Class.error)
-            alert(Class.error)
+            console.error(Class.error)
         else
             setparticularClass(Class.class)
+            
         
     }
     return (
         <>
             {loading?
-            <>Loading...</>:error?<>{error}</>:
+            <MenuItem>
+            Loading...
+            </MenuItem>:error?<MenuItem>{error}</MenuItem>:
             <>
-            <ListGroup>
                 {classes.map((cl,idx)=>{
                     return(
-                        <ListGroupItem key={idx} style={{cursor:'pointer'}} onClick={()=>renderEditClass(cl)}>
+                        <MenuItem key={idx}  onClick={()=>{renderEditClass(cl);onClick()}}>
                             {cl}
-                        </ListGroupItem>
+                        </MenuItem>
                     )
                 })}
-            </ListGroup>
-            <p>{JSON.stringify(particularClass)}</p>
+            {/* <p>{JSON.stringify(particularClass)}</p> */}
             </>
             }
         </>

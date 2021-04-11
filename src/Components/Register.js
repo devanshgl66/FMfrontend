@@ -8,31 +8,68 @@ import { userRegister } from "../redux/actions/authAction";
 import Loader from './Loader'
 import ModalMessage from './ModalMessage'
 import {Link} from 'react-router-dom'
-import WebcamCapture from "./WebcamCapture";
 import Webcam from "react-webcam";
-const Register = (props) => {
+import Avatar from 'react-avatar-edit'
+function Register (props) {
   const dispatch = useDispatch()
-  const CommonRegistration=(props)=>{
-    const [profilePic, setprofilePic] = useState(null)
-    return(
-        <>
+
+
+  
+function RegisterTeacher (props) {
+
+  const [profilePic, setprofilePic] = useState(null)
+    const [preview, setpreview] = useState(null)
+    function onClose() {
+      setpreview( null)
+  }
+  
+  function onCrop(preview) {
+      setpreview(preview)
+  }
+  const [error,seterror]=useState(null)
+  const [loading,setloading]=useState(false)
+  const [success,setsuccess]=useState(false)
+  const [errorMessage, seterrorMessage] = useState("");
+  function TeacherRegisterHandler(val, e) {
+    e.preventDefault();
+    if (val.password.length < 8)
+      seterrorMessage("Password must be of length 8");
+    else if (val.password !== val.password2)
+      seterrorMessage("Password do not Match");
+    else {
+      const msg={seterror,setloading,setsuccess}
+      seterrorMessage("");
+      // console.log(val)
+      // const teacher=JSON.parse(JSON.stringify(val)) 
+      //   teacher.role=1  //1=TEACHER
+      //   if(val.image && val.image.length>0)
+      //   teacher.profilePic=val.profilePic
+      //   console.log(teacher)
+      // console.log(preview)
+        handleRegister({...val,role:1,profilePic:preview},msg)
+    }
+  }
+  return (
+    <>
+    <Container>
+      <Row className="justify-content-md-center">
+        <Col md={6} xs={12}>
+          <h1>Teacher Register</h1>
+          <LocalForm
+            onSubmit={(values, e) => {e.preventDefault(); TeacherRegisterHandler(values, e)}}
+          >
+            <>
             <Row className="form-group">
               <Col>
                 <Label htmlFor="image">Profile Pic:</Label>
-                <Control.file
-                  type='file'
-                  model=".profilePic"
-                  id="image"
-                  name="image"
-                  onChange={(e) => {
-                    setprofilePic(URL.createObjectURL(e.target.files[0]));
-                  }}
+                <Avatar
+                    width={390}
+                    height={295}
+                    onCrop={onCrop}
+                    onClose={onClose}
+                    src={profilePic}
                 />
-                <img
-                  style={{ height: "100px", width: "100px" }}
-                  src={profilePic}
-                  alt="Profile Pic"
-                />
+                <img src={preview} alt="Preview" />
               </Col>
             </Row>
             <Row className="form-group">
@@ -91,42 +128,6 @@ const Register = (props) => {
               </Col>
             </Row>
         </>
-    )
-}
-function RegisterTeacher (props) {
-
-  const [error,seterror]=useState(null)
-  const [loading,setloading]=useState(false)
-  const [success,setsuccess]=useState(false)
-  const [errorMessage, seterrorMessage] = useState("");
-  function TeacherRegisterHandler(val, e) {
-    e.preventDefault();
-    if (val.password.length < 8)
-      seterrorMessage("Password must be of length 8");
-    else if (val.password !== val.password2)
-      seterrorMessage("Password do not Match");
-    else {
-      const msg={seterror,setloading,setsuccess}
-      seterrorMessage("");
-      // console.log(val)
-      // const teacher=JSON.parse(JSON.stringify(val)) 
-      //   teacher.role=1  //1=TEACHER
-      //   if(val.image && val.image.length>0)
-      //   teacher.profilePic=val.profilePic
-      //   console.log(teacher)
-        handleRegister({...val,role:1},msg)
-    }
-  }
-  return (
-    <>
-    <Container>
-      <Row className="justify-content-md-center">
-        <Col md={6} xs={12}>
-          <h1>Teacher Register</h1>
-          <LocalForm
-            onSubmit={(values, e) => {e.preventDefault(); TeacherRegisterHandler(values, e)}}
-          >
-            <CommonRegistration/>
             <Row>
               <Col>
                 {errorMessage.length > 0 ? (
@@ -160,6 +161,15 @@ function RegisterTeacher (props) {
 
 function RegisterStudent(props)  {
 
+  const [profilePic, setprofilePic] = useState(null)
+    const [preview, setpreview] = useState(null)
+    function onClose() {
+      setpreview( null)
+  }
+  
+  function onCrop(preview) {
+      setpreview(preview)
+  }
   const [error,seterror]=useState(null)
   const [loading,setloading]=useState(false)
   const [success,setsuccess]=useState(false)
@@ -170,8 +180,8 @@ function RegisterStudent(props)  {
         seterrorMessage("Password must be of length 8");
       else if (val.password !== val.password2)
         seterrorMessage("Password do not Match");
-      else if((val.rollNo).toString().length!=11)
-        seterrorMessage("Roll no. does not exist");
+      else if((val.rollNo).toString().length!==11)
+        seterrorMessage("Wrong Roll no");
       else if(selectedImg.length<6)
         seterrorMessage('Please at least select 6 photos')
       else {
@@ -179,8 +189,7 @@ function RegisterStudent(props)  {
         seterrorMessage("");
         const student=JSON.parse(JSON.stringify(val)) 
         student.role=0  //0=STUDENT
-        if(val.image && val.image.length>0)
-        student.profilePic=val.image[0]
+        student.profilePic=preview
         var photos=[]
         for(var i=0;i<selectedImg.length;i++){
           photos.push(imgSrc[selectedImg[i]])
@@ -254,7 +263,76 @@ function RegisterStudent(props)  {
             <LocalForm
               onSubmit={(values, e) => StudentRegisterHandler(values, e)}
             >
-              <CommonRegistration/>
+              <>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="image">Profile Pic:</Label>
+                <Avatar
+                    width={390}
+                    height={295}
+                    onCrop={onCrop}
+                    onClose={onClose}
+                    src={profilePic}
+                />
+                <img src={preview} alt="Preview" />
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="email">Email</Label>
+                <Control.text
+                  model=".email"
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="email"
+                  className="form-control"
+                  required
+                />
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="firstname">Name</Label>
+                <Control.text
+                  model=".name"
+                  id="name"
+                  name="name"
+                  placeholder="name"
+                  className="form-control"
+                  required
+                />
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="password">Password</Label>
+                <Control.text
+                  model=".password"
+                  id="password"
+                  name="password"
+                  className="form-control"
+                  placeholder="password"
+                  type="password"
+                  required
+                />
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="password">RetypePassword</Label>
+                <Control.text
+                  model=".password2"
+                  id="password"
+                  name="password"
+                  className="form-control"
+                  placeholder="password"
+                  type="password"
+                  required
+                />
+              </Col>
+            </Row>
+        </>
               <Row className="form-group">
               <Col>
                 <Label htmlFor="rollNo">Roll No.</Label>
@@ -337,8 +415,9 @@ function RegisterStudent(props)  {
     );
   };
   async function handleRegister(val,msg){
+        // console.log(val)
         msg.setloading(true)
-        const err=await dispatch(userRegister(val))
+        const err=await dispatch(userRegister({...val}))
         msg.setloading(false)
         if(err==null)
           msg.setsuccess(true)
@@ -348,7 +427,7 @@ function RegisterStudent(props)  {
   const role=parseInt(props.location.pathname.split('/')[2])
   return (
     <div>
-      {role==0?<RegisterStudent />:<RegisterTeacher/>}
+      {role==0?<RegisterStudent />:<RegisterTeacher />}
     </div>
   );
 };

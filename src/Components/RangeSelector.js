@@ -14,8 +14,6 @@ const RangeSelector = ({ fields, setFields,pos }) => {
 
     setFields(values);
   }
-  // console.log(pos)
-  // console.log(fields)
   function handleAdd() {
     // alert(pos)
     const values = JSON.parse(JSON.stringify(fields));
@@ -39,8 +37,8 @@ const RangeSelector = ({ fields, setFields,pos }) => {
         Add range
       </button>
       <br/>
-      {fields[pos].map((field, idx) => {
-        // console.log(field)
+      {fields[pos]&&fields[pos].map((field, idx) => {
+        console.log(field)
         return (
           <span key={`${field}-${idx}`}>
             {
@@ -62,6 +60,7 @@ const RangeSelector = ({ fields, setFields,pos }) => {
                 <button type="button" as='span' onClick={() => handleRemove(idx)}>
                   X
                 </button>
+                <br/>
               </>
             }
           </span>

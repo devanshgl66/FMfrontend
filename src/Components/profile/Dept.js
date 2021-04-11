@@ -1,0 +1,135 @@
+import React, { useEffect, useState } from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import { Row, Col, Container, Button, Image } from "react-bootstrap";
+import { LocalForm, Control } from "react-redux-form";
+import { Label } from "reactstrap";
+import Message from '../Message';
+import Avatar from 'react-avatar-edit'
+import Loader from '../Loader'
+import ModalMessage from '../ModalMessage'
+import { updateUser } from '../../redux/actions/authAction';
+const DeptProfile=(props)=>{
+  const dispatch = useDispatch()
+  const [error,seterror]=useState(null)
+  const [loading,setloading]=useState(false)
+  const [success,setsuccess]=useState(false)
+    const {user}=useSelector(state=>state.auth)
+    const [profilePic, setprofilePic] = useState(user?user.profilePic:null)
+    const [preview, setpreview] = useState(null)
+    const [errorMessage, seterrorMessage] = useState("");
+    if(!user)
+        return (
+            <>Login first.</>
+        )
+    
+    function onClose() {
+        setpreview( null)
+    }
+    
+    function onCrop(preview) {
+        setpreview(preview)
+    }
+    async function updateProfile(value){
+      const msg={seterror,setloading,setsuccess}
+      seterrorMessage("");
+        const val={...value,role:2,profilePic:preview}
+        msg.setloading(true)
+        const err=await dispatch(updateUser(val))
+        msg.setloading(false)
+        if(err==null)
+          msg.setsuccess(true)
+        else
+          msg.seterror(err)
+    }
+    return(
+        <>
+        <LocalForm
+            onSubmit={(values, e) => {e.preventDefault(); updateProfile(values)}}
+          >
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="image">Profile Pic:</Label>
+                <Avatar
+                    width={390}
+                    height={295}
+                    onCrop={onCrop}
+                    onClose={onClose}
+                    src={profilePic}
+                />
+                <img src={preview} alt="Preview" />
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="email">Email</Label>
+                <Control.text
+                  model=".email"
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="email"
+                  className="form-control"
+                  required
+                  defaultValue={user.email}
+                  disabled={true}
+                />
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="firstname">Name</Label>
+                <Control.text
+                  model=".name"
+                  id="name"
+                  name="name"
+                  placeholder="name"
+                  className="form-control"
+                  defaultValue={user.name}
+                  required
+                />
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="branch">Branch Code</Label>
+                <Control.text
+                  type='number'
+                  model=".branch"
+                  id="branch"
+                  name="branch"
+                  placeholder="branch"
+                  className="form-control"
+                  required
+                  defaultValue={user.branch}
+                  disabled={true}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {errorMessage.length > 0 ? (
+                  <Message variant="danger">{errorMessage}</Message>
+                ) : (
+                  <></>
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Button type="submit" color="primary">
+                  Register
+                </Button>
+              </Col>
+            </Row>
+          </LocalForm>
+          {loading?<ModalMessage isOpen={loading} toggle={()=>setloading(!loading)} header='Registration' variant='none'>
+        <Loader/>
+      </ModalMessage>:error!=null?<ModalMessage isOpen={error!=null} toggle={()=>seterror(null)} header='Registration' variant='danger'>
+        {error}
+      </ModalMessage>:success?<ModalMessage isOpen={success} toggle={()=>setsuccess(!success)} header='Registration' variant='success'>
+        Profile Updated
+      </ModalMessage>:<></>}
+        </>
+    )
+}
+export default DeptProfile;
