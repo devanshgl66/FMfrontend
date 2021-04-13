@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+/* eslint-disable react/jsx-pascal-case */
+/* eslint-disable no-unused-vars */
+import React, {  useState } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import { Row, Col, Container, Button, Image } from "react-bootstrap";
+import { Row, Col,  Button} from "react-bootstrap";
 import { LocalForm, Control } from "react-redux-form";
 import { Label } from "reactstrap";
 import Message from '../Message';

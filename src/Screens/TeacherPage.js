@@ -18,6 +18,7 @@ import "../NavStyle.scss";
 import AddClass from "../Components/AddClass";
 import ShowAllClass from "../Components/ShowAllClass";
 import TeacherProfile from "../Components/profile/Teacher";
+import { AddAttendanceForm } from "../Components/MarkAttendance";
 const TeacherPage = () => {
   const [comp, setcomp] = useState("dashboard");
   const [particularClass, setparticularClass] = useState(null);
@@ -26,6 +27,7 @@ const TeacherPage = () => {
     addClass: <AddClass Class={null} />,
     editClass: <AddClass Class={particularClass} />,
     profile: <TeacherProfile />,
+    markAttendance:<AddAttendanceForm/>
   };
   function DispComponent({ state }) {
     return <>{compEnum[state]}</>;
@@ -61,8 +63,8 @@ const TeacherPage = () => {
             </Menu>
             <Menu iconShape="circle">
               <SubMenu title="Manage Classes" icon={<FaRegLaughWink />}>
-                <MenuItem onClick={() => setcomp("addClass")}>
-                  Add Class
+                <MenuItem onClick={() => setcomp("markAttendance")}>
+                  Mark Attendance
                 </MenuItem>
                 <SubMenu title={"Edit Class"}>
                   <ShowAllClass

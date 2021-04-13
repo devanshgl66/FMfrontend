@@ -23,6 +23,8 @@ import "../NavStyle.scss";
 import AddClass from "../Components/AddClass";
 import ShowAllClass from "../Components/ShowAllClass";
 import DeptProfile from "../Components/profile/Dept";
+import AddSubject from "../Components/AddSubject";
+import { editSubject } from "../redux/actions/subject";
 // import '../NavStyle.css'
 const DepttPage = () => {
   const [comp, setcomp] = useState("dashboard");
@@ -32,6 +34,8 @@ const DepttPage = () => {
     addClass: <AddClass Class={null} />,
     editClass: <AddClass Class={particularClass} />,
     profile: <DeptProfile />,
+    addSubject:<AddSubject/>,
+    editSubject:<AddSubject Subject={{}}/>
   };
   function DispComponent({ state }) {
     return <>{compEnum[state]}</>;
@@ -77,6 +81,17 @@ const DepttPage = () => {
                     onClick={() => setcomp("editClass")}
                   />
                 </SubMenu>
+              </SubMenu>
+            </Menu>
+            <Menu iconShape="circle">
+              <SubMenu title="Manage Subjects" icon={<FaRegLaughWink />}>
+                <MenuItem onClick={() => setcomp("addSubject")}>
+                  Add Subject
+                </MenuItem>
+                <MenuItem onClick={() => setcomp("editSubject")}>
+                  Edit Subject
+                </MenuItem>
+                
               </SubMenu>
             </Menu>
           </SidebarContent>
