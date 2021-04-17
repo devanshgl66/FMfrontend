@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ProSidebar,
   Menu,
@@ -19,19 +19,37 @@ import AddClass from "../Components/AddClass";
 import ShowAllClass from "../Components/ShowAllClass";
 import TeacherProfile from "../Components/profile/Teacher";
 import { AddAttendanceForm } from "../Components/MarkAttendance";
+import { useDispatch } from "react-redux";
+import { dropDown } from "../redux/actions/classAction";
+import { markAttendance } from "../redux/actions/attendance";
 const TeacherPage = () => {
+  const dispatch = useDispatch()
   const [comp, setcomp] = useState("dashboard");
   const [particularClass, setparticularClass] = useState(null);
+  const [teacherClass, setteacherClass] = useState()
+  const [Class, setClass] = useState({})
   const compEnum = {
     dashboard: <h1>DashBoard</h1>,
     addClass: <AddClass Class={null} />,
     editClass: <AddClass Class={particularClass} />,
     profile: <TeacherProfile />,
-    markAttendance:<AddAttendanceForm/>
+    markAttendance:<AddAttendanceForm Class={Class}/>
   };
   function DispComponent({ state }) {
     return <>{compEnum[state]}</>;
   }
+  useEffect(() => {
+    (async function(){
+      try{
+        const data=await dispatch(dropDown({teacherData:'1'}))
+      setteacherClass(data.class)
+      }catch(err){
+        console.log(err)
+        setteacherClass(null)
+      }
+    })()
+  }, [dispatch])
+  console.log(teacherClass)
   return (
     <Row>
       <Col md="auto">
@@ -49,7 +67,7 @@ const TeacherPage = () => {
                 whiteSpace: "nowrap",
               }}
             >
-              Department(To be changed)
+              Teacher(To be changed)
             </div>
           </SidebarHeader>
 
@@ -63,16 +81,36 @@ const TeacherPage = () => {
             </Menu>
             <Menu iconShape="circle">
               <SubMenu title="Manage Classes" icon={<FaRegLaughWink />}>
-                <MenuItem onClick={() => setcomp("markAttendance")}>
-                  Mark Attendance
-                </MenuItem>
+              <SubMenu title={"Mark attendance"}>
+                {teacherClass&&teacherClass.map((Class,idx)=>{
+                  return <SubMenu title={<>Branch:{Class.branchCode}{" "}YoS:{Class.yearOfStart}</>}>
+                    {Class.section.map(section=>{
+                      return <SubMenu title={section.name}>
+                        {section.subject.map(subject=>{
+                          return <MenuItem onClick={() => {
+                            setcomp("markAttendance");
+                            setClass({branchCode:Class.branchCode,yearOfStart:Class.yearOfStart,sectionName:section.name,subjectCode:subject})
+                          }}
+                          >{subject}</MenuItem>
+                        })}
+                      </SubMenu>
+                    })}
+                  </SubMenu>
+                })}
+                </SubMenu>
+                {/* <SubMenu onClick={() => {
+                    setcomp("markAttendance");
+                    setClass({branchCode:Class.branchCode,yearOfStart:Class.yearOfStart})
+                  }}>
+                    Branch:{Class.branchCode}{" "}YoS:{Class.yearOfStart}
+                  </SubMenu>
                 <SubMenu title={"Edit Class"}>
                   <ShowAllClass
                     particularClass={particularClass}
                     setparticularClass={setparticularClass}
                     onClick={() => setcomp("editClass")}
                   />
-                </SubMenu>
+                </SubMenu> */}
               </SubMenu>
             </Menu>
           </SidebarContent>

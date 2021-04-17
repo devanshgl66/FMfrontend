@@ -11,7 +11,8 @@ import ModalMessage from './ModalMessage'
 import {Link} from 'react-router-dom'
 import { markAttendance } from "../redux/actions/attendance";
 
-export const AddAttendanceForm=(props)=>{
+export const AddAttendanceForm=({Class})=>{
+  // const Class={branchCode:1,yearOfStart:2017,sectionName:'group1',subjectCode:'COD001A'}
     const dispatch = useDispatch()
     const [image, setimage] = useState([])
     const [error,seterror]=useState(null)
@@ -72,20 +73,22 @@ export const AddAttendanceForm=(props)=>{
 
         //DISPATCH THING HERE
         // console.log(val)
-        const err=await dispatch(markAttendance(val))
-        console.error(err)
-        msg.setloading(false)
-        if(err==null)
-            msg.setsuccess(true)
+        const response=await dispatch(markAttendance({...val,...Class}))
+        if(response.success==false){
+          console.error(response.error)
+          msg.seterror(response.error)
+        }
         else
-            msg.seterror(err)
+          msg.setsuccess(response.students)
+
+        msg.setloading(false)
       }
     }
     return(
         <>
-            <Container>
-      <Row className="justify-content-md-center">
-        <Col md={6} xs={12}>
+            <>
+      <>
+        <>
           <h1>Mark Attendance</h1>
           <LocalForm
             onSubmit={(values, e) => {e.preventDefault(); addAttendanceHandler(values, e)}}
@@ -101,6 +104,9 @@ export const AddAttendanceForm=(props)=>{
                   placeholder="branchCode"
                   className="form-control"
                   required
+                  disabled
+                  // defaultValue={1}
+                  value={Class.branchCode}
                 />
               </Col>
             </Row>
@@ -115,6 +121,8 @@ export const AddAttendanceForm=(props)=>{
                   placeholder="yearOfStart"
                   className="form-control"
                   required
+                  disabled
+                  value={Class.yearOfStart}
                 />
               </Col>
             </Row>
@@ -129,6 +137,8 @@ export const AddAttendanceForm=(props)=>{
                   placeholder="sectionName"
                   className="form-control"
                   required
+                  disabled
+                  value={Class.sectionName}
                 />
               </Col>
             </Row>
@@ -143,6 +153,8 @@ export const AddAttendanceForm=(props)=>{
                   placeholder="subjectCode"
                   className="form-control"
                   required
+                  disabled
+                  value={Class.subjectCode}
                 />
               </Col>
             </Row>
@@ -186,15 +198,20 @@ export const AddAttendanceForm=(props)=>{
               </Col>
             </Row>
           </LocalForm>
-        </Col>
-      </Row>
-    </Container>
-    {loading?<ModalMessage isOpen={loading} toggle={()=>setloading(!loading)} header='Registration' variant='none'>
+        </>
+      </>
+    </>
+    {loading?<ModalMessage isOpen={loading} toggle={()=>setloading(!loading)} header='Mark Attendance' variant='none'>
         <Loader/>
-      </ModalMessage>:error!=null?<ModalMessage isOpen={error!=null} toggle={()=>seterror(null)} header='Registration' variant='danger'>
+      </ModalMessage>:error!=null?<ModalMessage isOpen={error!=null} toggle={()=>seterror(null)} header='Mark Attendance' variant='danger'>
         {error}
-      </ModalMessage>:success?<ModalMessage isOpen={success} toggle={()=>setsuccess(!success)} header='Registration' variant='success'>
-        Attendance is marked. Go to <Link to={`/`}>home</Link> page
+      </ModalMessage>:success?<ModalMessage isOpen={success} toggle={()=>setsuccess(!success)} header='Mark Attendance' variant='success'>
+        Attendance is marked. <br/>
+        RollNo of students present:
+        <ol>
+          {success.students.map(roll=><li>{roll}</li>)}
+        </ol>
+        All absentese will get a mail.
       </ModalMessage>:<></>}
             <Row></Row>
         </>

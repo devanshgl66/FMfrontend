@@ -197,7 +197,7 @@ function RegisterStudent(props)  {
         // console.log(selectedImg)
         student.images=photos
         console.log(student)
-        await handleRegister({...val,role:0,images:photos},msg)
+        await handleRegister(student,msg)
       }
     }
     const [imgSrc, setImgSrc] = useState([]);
@@ -415,7 +415,7 @@ function RegisterStudent(props)  {
     );
   };
   async function handleRegister(val,msg){
-        // console.log(val)
+        console.log(val)
         msg.setloading(true)
         const err=await dispatch(userRegister({...val}))
         msg.setloading(false)

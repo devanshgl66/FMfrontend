@@ -16,8 +16,9 @@ function App() {
   const {user}  = useSelector(state => state.auth)
   // console.log(user)
   const userRoute={
-    1:<Route path='/teacher' render={(props)=><TeacherPage/>}/>,
-    2:<Route path='/deptt' render={(props)=><DepttPage/>}/>
+    0:<Route path='/' component={HomePage} exact/>,
+    1:<Route path='/' render={(props)=><TeacherPage/>} exact/>,
+    2:<Route path='/' render={(props)=><DepttPage/>} exact/>
   }
   function DispUserRoute({state}){
     return <>{userRoute[state]}</>
@@ -28,7 +29,7 @@ function App() {
       <main className=''>
         <Container fluid>
           {/* <Temp/> */}
-          <Route path='/' component={HomePage} exact/>
+          
           {/* <BarChart></BarChart> */}
           <Route path='/login' render={(props)=><Login location={props.location} history={props.history} role={1}/>}/>
           <Route path='/register' render={(props)=><Register location={props.location} history={props.history}/>}/>
@@ -36,7 +37,7 @@ function App() {
           <Route path='/seeAttendance' render={(props)=><SeeAttendanceForm  location={props.location} history={props.history} user='Teacher'/>}/>
           {/* <Route path='/addClass' render={(props)=><AddClass/>}/>
           <Route path='/temp' render={(props)=><ShowAllClass/>}/> */}
-          {user?<DispUserRoute state={user.role}/>:<></>}
+          {user?<DispUserRoute state={user.role||0}/>:<></>}
         </Container>
       </main>
     </BrowserRouter>

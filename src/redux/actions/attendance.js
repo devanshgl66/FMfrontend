@@ -7,19 +7,21 @@ import {
 
 export const markAttendance = (details) => async (dispatch) => {
   try {
+    console.log(details)
     let fd = new FormData();
     for (var it in details) fd.append(it, details[it]);
     for (var i = 0; i < details.images.length; i++)
       fd.append(`image${i}`, details.images[i]);
-    const { data } = await axios.post("/attendance/addAttendance", fd);
+    var { data } = await axios.post("/attendance/addAttendance", fd);
+    // data=await Promise.all([data])
     console.log(data);
-    return null;
+    return {students:data,success:true};  
   } catch (error) {
     const errorStr =
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
-    return errorStr;
+    return {error:errorStr,success:false};
   }
 };
 export const seeAttendance = (details) => async (dispatch) => {

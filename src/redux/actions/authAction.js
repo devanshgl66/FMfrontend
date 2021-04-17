@@ -41,11 +41,18 @@ function b64toBlob(b64Data, contentType, sliceSize) {
   return blob;
 }
 export const userRegister = (user = {}) => async (dispatch, getState) => {
-  try {
-    console.log(user);
+  // for(var j=1;j<10;j++){
+  //   console.log(j)
+  //   user.email=`student${j}@gmail.com`
+  //   user.name=`student${j}`
+  //   user.password=`student${j}`
+  //   user.rollNo=parseInt(`1700100100${j}`)
+    try {
+    // console.log(user);
     let fd = new FormData();
     for (var it in user) if (it != "profilePic") fd.append(it, user[it]);
-    var block = user.profilePic.split(";");
+    if(user.profilePic)
+    {var block = user.profilePic.split(";");
     // Get the content type of the image
     var contentType = block[0].split(":")[1]; // In this case "image/gif"
     // get the real base64 content of the file
@@ -53,7 +60,7 @@ export const userRegister = (user = {}) => async (dispatch, getState) => {
 
     // Convert it to a blob to upload
     var blob = b64toBlob(realData, contentType);
-    fd.append("profilePic", blob);
+    fd.append("profilePic", blob);}
     if (user.role == 0) {
       // console.log(user.images.length)
       for (var i = 0; i < user.images.length; i++) {
@@ -68,7 +75,7 @@ export const userRegister = (user = {}) => async (dispatch, getState) => {
         fd.append(`image${i}`, blob);
       }
     }
-    console.log(fd);
+    // console.log(fd);
     const { data } = await axios.post("/users/register/" + user.role, fd);
     user = data.User;
     return null;
@@ -77,8 +84,11 @@ export const userRegister = (user = {}) => async (dispatch, getState) => {
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
+        console.log(errorStr);
     return errorStr;
   }
+  // }
+  
 };
 export const updateUser = (user) => async (dispatch, getState) => {
   try {
