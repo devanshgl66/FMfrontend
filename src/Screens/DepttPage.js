@@ -57,7 +57,7 @@ const DepttPage = () => {
                 whiteSpace: "nowrap",
               }}
             >
-              Department(To be changed)
+              Department Handle
             </div>
           </SidebarHeader>
 

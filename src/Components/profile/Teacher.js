@@ -78,6 +78,15 @@ const TeacherProfile=(props)=>{
                   disabled={true}
                 />
               </Col>
+              
+            </Row>
+            <Row>
+              <Col>
+              {user.verified===false?<>
+            <Button onClick={()=>{props.history.push(`/verifyAccount/${user.role}`,{email:user.email,role:user.role})}}>Verify Account</Button>
+          </>:<><span className='alert alert-success' style={{width:'100%'}}>Verified</span><br/><br/></>}
+            
+              </Col>
             </Row>
             <Row className="form-group">
               <Col>

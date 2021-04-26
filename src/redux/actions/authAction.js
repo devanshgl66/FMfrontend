@@ -164,3 +164,27 @@ export const userLogout = ({ role }) => async (dispatch) => {
     console.log(err);
   }
 };
+export const sendOTP = (val) => async (dispatch) => {
+  try {
+    const {data}=await axios.post(`/users/sendOTP`,val);
+    return data
+  } catch (error) {
+    const errormsg=error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    console.log(errormsg);
+    return {success:false,err:errormsg}
+  }
+};
+export const verifyAccount=(val)=>async(dispatch)=>{
+  try {
+    const {data}=await axios.post(`/users/verifyAccount`,val);
+    return data
+  }  catch (error) {
+    const errormsg=error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    console.log(errormsg);
+    return {success:false,err:errormsg}
+  }
+}

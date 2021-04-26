@@ -22,7 +22,7 @@ import { AddAttendanceForm } from "../Components/MarkAttendance";
 import { useDispatch } from "react-redux";
 import { dropDown } from "../redux/actions/classAction";
 import { markAttendance } from "../redux/actions/attendance";
-const TeacherPage = () => {
+const TeacherPage = (props) => {
   const dispatch = useDispatch()
   const [comp, setcomp] = useState("dashboard");
   const [particularClass, setparticularClass] = useState(null);
@@ -32,7 +32,7 @@ const TeacherPage = () => {
     dashboard: <h1>DashBoard</h1>,
     addClass: <AddClass Class={null} />,
     editClass: <AddClass Class={particularClass} />,
-    profile: <TeacherProfile />,
+    profile: <TeacherProfile {...props} />,
     markAttendance:<AddAttendanceForm Class={Class}/>
   };
   function DispComponent({ state }) {
@@ -49,7 +49,6 @@ const TeacherPage = () => {
       }
     })()
   }, [dispatch])
-  console.log(teacherClass)
   return (
     <Row>
       <Col md="auto">
@@ -67,13 +66,13 @@ const TeacherPage = () => {
                 whiteSpace: "nowrap",
               }}
             >
-              Teacher(To be changed)
+              Teacher Handle
             </div>
           </SidebarHeader>
 
           <SidebarContent>
             <Menu iconShape="circle">
-              <MenuItem icon={<FaTachometerAlt />}>Dashboard</MenuItem>
+              <MenuItem icon={<FaTachometerAlt />} onClick={() => setcomp("dashboard")}>Dashboard</MenuItem>
               <MenuItem icon={<FaGem />} onClick={() => setcomp("profile")}>
                 {" "}
                 Profile

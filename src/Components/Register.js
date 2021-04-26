@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container, Button, Image } from "react-bootstrap";
+import { Row, Col, Container, Button, Image, Form } from "react-bootstrap";
 import { LocalForm, Control } from "react-redux-form";
-import { Label } from "reactstrap";
+import { Input, Label } from "reactstrap";
 import Message from "./Message";
 import {useDispatch, useSelector} from 'react-redux'
 import { userRegister } from "../redux/actions/authAction";
@@ -12,11 +13,12 @@ import Webcam from "react-webcam";
 import Avatar from 'react-avatar-edit'
 function Register (props) {
   const dispatch = useDispatch()
-
-
-  
+  const [error,seterror]=useState(null)
+  const [success,setsuccess]=useState(false)
+  const [loading,setloading]=useState(false)
+  const role=parseInt(props.location.pathname.split('/')[2])
 function RegisterTeacher (props) {
-
+  const [email,setemail]=useState('')
   const [profilePic, setprofilePic] = useState(null)
     const [preview, setpreview] = useState(null)
     function onClose() {
@@ -26,9 +28,6 @@ function RegisterTeacher (props) {
   function onCrop(preview) {
       setpreview(preview)
   }
-  const [error,seterror]=useState(null)
-  const [loading,setloading]=useState(false)
-  const [success,setsuccess]=useState(false)
   const [errorMessage, seterrorMessage] = useState("");
   function TeacherRegisterHandler(val, e) {
     e.preventDefault();
@@ -39,13 +38,6 @@ function RegisterTeacher (props) {
     else {
       const msg={seterror,setloading,setsuccess}
       seterrorMessage("");
-      // console.log(val)
-      // const teacher=JSON.parse(JSON.stringify(val)) 
-      //   teacher.role=1  //1=TEACHER
-      //   if(val.image && val.image.length>0)
-      //   teacher.profilePic=val.profilePic
-      //   console.log(teacher)
-      // console.log(preview)
         handleRegister({...val,role:1,profilePic:preview},msg)
     }
   }
@@ -82,6 +74,8 @@ function RegisterTeacher (props) {
                   type="email"
                   placeholder="email"
                   className="form-control"
+                  value={email}
+                  onChange={(e)=>setemail(e.target.value)}
                   required
                 />
               </Col>
@@ -148,19 +142,12 @@ function RegisterTeacher (props) {
         </Col>
       </Row>
     </Container>
-    {loading?<ModalMessage isOpen={loading} toggle={()=>setloading(!loading)} header='Registration' variant='none'>
-        <Loader/>
-      </ModalMessage>:error!=null?<ModalMessage isOpen={error!=null} toggle={()=>seterror(null)} header='Registration' variant='danger'>
-        {error}
-      </ModalMessage>:success?<ModalMessage isOpen={success} toggle={()=>setsuccess(!success)} header='Registration' variant='success'>
-        Registration success Go to <Link to={`/`}>home</Link> page
-      </ModalMessage>:<></>}
     </>
   );
 };
 
 function RegisterStudent(props)  {
-
+  const [email,setemail]=useState('')
   const [profilePic, setprofilePic] = useState(null)
     const [preview, setpreview] = useState(null)
     function onClose() {
@@ -170,9 +157,7 @@ function RegisterStudent(props)  {
   function onCrop(preview) {
       setpreview(preview)
   }
-  const [error,seterror]=useState(null)
-  const [loading,setloading]=useState(false)
-  const [success,setsuccess]=useState(false)
+  
   const [errorMessage, seterrorMessage] = useState("");    
   async function StudentRegisterHandler(val, e) {
       e.preventDefault();
@@ -402,7 +387,35 @@ function RegisterStudent(props)  {
             </LocalForm>
           </Col>
         </Row>
-      </Container>
+      </Container> 
+      </>
+    );
+  };
+  async function handleRegister(val,msg){
+        // console.log(val)
+        msg.setloading(true)
+        // const err=await dispatch(userRegister({...val}))
+        const err=null
+        msg.setloading(false)
+        if(err==null){
+          //PENDING
+          props.history.push(`/verifyAccount/${role}`,{email:val.email,role:role})
+
+
+
+        }
+        else
+          msg.seterror(err)
+}
+  console.log(error)
+  
+  return (
+    <>
+    {
+      role==0?<RegisterStudent />:<RegisterTeacher />
+    }
+      
+
       {loading?<ModalMessage isOpen={loading} toggle={()=>setloading(!loading)} header='Registration' variant='none'>
         <Loader/>
       </ModalMessage>:error!=null?<ModalMessage isOpen={error!=null} toggle={()=>seterror(null)} header='Registration' variant='danger'>
@@ -410,25 +423,7 @@ function RegisterStudent(props)  {
       </ModalMessage>:success?<ModalMessage isOpen={success} toggle={()=>setsuccess(!success)} header='Registration' variant='success'>
         Registration success Go to <Link to={`/`}>home</Link> page
       </ModalMessage>:<></>}
-      
-      </>
-    );
-  };
-  async function handleRegister(val,msg){
-        console.log(val)
-        msg.setloading(true)
-        const err=await dispatch(userRegister({...val}))
-        msg.setloading(false)
-        if(err==null)
-          msg.setsuccess(true)
-        else
-          msg.seterror(err)
-}
-  const role=parseInt(props.location.pathname.split('/')[2])
-  return (
-    <div>
-      {role==0?<RegisterStudent />:<RegisterTeacher />}
-    </div>
+    </>
   );
 };
 

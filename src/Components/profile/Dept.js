@@ -76,6 +76,9 @@ const DeptProfile = (props) => {
               disabled={true}
             />
           </Col>
+          {user&user.verified==false?<Col>
+            <Button onClick={()=>{props.history.push(`/verifyAccount/${user.role}`,{email:user.email,role:user.role})}}>Verify Account</Button>
+          </Col>:<></>}
         </Row>
         <Row className="form-group">
           <Col>
