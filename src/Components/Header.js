@@ -1,24 +1,29 @@
 import React, { useState } from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import { Navbar, Nav, Container, NavDropdown, Dropdown } from "react-bootstrap";
+import {
+  Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../redux/actions/authAction";
-import Loader from './Loader'
-import Message from './Message'
+import Loader from "./Loader";
+import Message from "./Message";
 const Header = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   // const user={}
-  const [loading, setloading] = useState(undefined)
+  const [loading, setloading] = useState(undefined);
   const logoutHandler = () => {
-    setloading(false)
+    setloading(false);
     dispatch(userLogout({ role: user.role }));
-    setloading(true)
+    setloading(true);
   };
   return (
     <header>
       {/* {loading===true&&<Message variant='success'>You are logout</Message>} */}
-      {loading===false&&<Loader/>}
+      {loading === false && <Loader />}
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         {/* Container removed in below line */}
         <Container fluid>
@@ -35,41 +40,45 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
-              {/* <LinkContainer to="/cart">
-                <Nav.Link>
-                  <i className="fas fa-shopping-cart" />
-                  Cart
-                </Nav.Link>
-              </LinkContainer> */}
               {user ? (
-                <NavDropdown title={
-                <span className="pull-left">
-                  {user.profilePic?
-                    <img className="thumbnail-image" 
-                        src={user.profilePic} 
-                        alt="user pic"
-                        style={{height:'75px',width:'75px'}}
-                    />
-                    :
-                    <i className="fa fa-user"/>
+                <NavDropdown
+                  title={
+                    <span className="pull-left">
+                      {user.profilePic ? (
+                        <img
+                          className="thumbnail-image"
+                          src={user.profilePic}
+                          alt="user pic"
+                          style={{ height: "75px", width: "75px" }}
+                        />
+                      ) : (
+                        <i className="fa fa-user" />
+                      )}
+                      {" " + user.name}
+                    </span>
                   }
-                {' '+user.name}
-                </span>}>
+                >
                   <NavDropdown.Item onClick={logoutHandler}>
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
                 <>
-                <NavDropdown title="Sign in" id="collasible-nav-dropdown">
-        <NavDropdown.Item href="/login/0">Student</NavDropdown.Item>
-        <NavDropdown.Item href="/login/1">teacher</NavDropdown.Item>
-        <NavDropdown.Item href="/login/2">Department</NavDropdown.Item>
-      </NavDropdown>
-      <NavDropdown title="Register" id="collasible-nav-dropdown">
-        <NavDropdown.Item href="/register/0">Student</NavDropdown.Item>
-        <NavDropdown.Item href="/register/1">teacher</NavDropdown.Item>
-      </NavDropdown>
+                  <NavDropdown title="Sign in" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="/login/0">Student</NavDropdown.Item>
+                    <NavDropdown.Item href="/login/1">teacher</NavDropdown.Item>
+                    <NavDropdown.Item href="/login/2">
+                      Department
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                  <NavDropdown title="Register" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="/register/0">
+                      Student
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/register/1">
+                      teacher
+                    </NavDropdown.Item>
+                  </NavDropdown>
                 </>
               )}
             </Nav>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3001",
+  "host":"http://192.168.5.1:3000",
   "dependencies": {
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
@@ -37,7 +38,7 @@
     "sass-loader": "^11.0.1",
     "web-vitals": "^1.0.1"
   },
-  "scripts": {
+  "scripts": { 
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
