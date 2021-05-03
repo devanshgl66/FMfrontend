@@ -17,6 +17,7 @@ function Register (props) {
   const [success,setsuccess]=useState(false)
   const [loading,setloading]=useState(false)
   const role=parseInt(props.location.pathname.split('/')[2])
+  const webcamRef = React.useRef(null);
 function RegisterTeacher (props) {
   const [email,setemail]=useState('')
   const [profilePic, setprofilePic] = useState(null)
@@ -208,14 +209,14 @@ function RegisterStudent(props)  {
         setstyleImg(tempStyle)
         // console.log(selectedImg)
       }
-      const webcamRef = React.useRef(null);
+      
     
       const capture = React.useCallback(() => {
         const imageSrc = webcamRef.current.getScreenshot({width: 512, height:512})
         // (imgSrc.push(imageSrc));
         setImgSrc([...imgSrc,imageSrc])
         setstyleImg([...styleImg,{border:'none'}])
-      }, [webcamRef]);
+      }, [imgSrc,setImgSrc]);
       const showImages=imgSrc.map((image,i)=>{        
         return(
             <Image onClick={()=>{selectimg(i)}}
@@ -394,12 +395,15 @@ function RegisterStudent(props)  {
   async function handleRegister(val,msg){
         // console.log(val)
         msg.setloading(true)
-        // const err=await dispatch(userRegister({...val}))
-        const err=null
+        const err=await dispatch(userRegister({...val}))
+        // const err=null
         msg.setloading(false)
         if(err==null){
           //PENDING
-          props.history.push(`/verifyAccount/${role}`,{email:val.email,role:role})
+          setTimeout(() => {
+            props.history.push(`/verifyAccount/${role}`,{email:val.email,role:role})
+          }, 5000);
+          
 
 
 
@@ -421,7 +425,7 @@ function RegisterStudent(props)  {
       </ModalMessage>:error!=null?<ModalMessage isOpen={error!=null} toggle={()=>seterror(null)} header='Registration' variant='danger'>
         {error}
       </ModalMessage>:success?<ModalMessage isOpen={success} toggle={()=>setsuccess(!success)} header='Registration' variant='success'>
-        Registration success Go to <Link to={`/`}>home</Link> page
+        Registration success.Please verify your email also from profile.Go to <Link to={`/`}>home</Link> page
       </ModalMessage>:<></>}
     </>
   );

@@ -8,6 +8,7 @@ var initState={
 export const authReducer=(state=initState,action)=>{
     switch(action.type){
         case USER_UPDATE_PROFILE:
+            localStorage.setItem('user',JSON.stringify(action.payload))
             return {...state,user:action.payload,error:null}
         case USER_LOGIN_REQUEST:
             return {...state,loading:true}

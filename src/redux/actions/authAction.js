@@ -177,8 +177,10 @@ export const sendOTP = (val) => async (dispatch) => {
   }
 };
 export const verifyAccount=(val)=>async(dispatch)=>{
-  try {
+  try { 
     const {data}=await axios.post(`/users/verifyAccount`,val);
+    data.user.role=val.role
+    await dispatch({type:USER_UPDATE_PROFILE,payload:data.user})
     return data
   }  catch (error) {
     const errormsg=error.response && error.response.data.message

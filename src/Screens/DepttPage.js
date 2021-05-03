@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import {
   ProSidebar,
   Menu,
@@ -16,7 +16,7 @@ import {
   FaRegLaughWink,
   FaHeart,
 } from "react-icons/fa";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import sidebarBg from "../bg1.jpg";
 import "../NavStyle.scss";
@@ -25,82 +25,109 @@ import ShowAllClass from "../Components/ShowAllClass";
 import DeptProfile from "../Components/profile/Dept";
 import AddSubject from "../Components/AddSubject";
 import { editSubject } from "../redux/actions/subject";
+import SideNav from "./navbar.css";
 // import '../NavStyle.css'
-const DepttPage = () => {
+const DepttPage = (props) => {
   const [comp, setcomp] = useState("dashboard");
   const [particularClass, setparticularClass] = useState(null);
+  const [showNav, setshowNav] = useState(true);
+  console.log(particularClass)
   const compEnum = {
     dashboard: <h1>DashBoard</h1>,
     addClass: <AddClass Class={null} />,
     editClass: <AddClass Class={particularClass} />,
-    profile: <DeptProfile />,
-    addSubject:<AddSubject/>,
-    editSubject:<AddSubject Subject={{}}/>
+    profile: <DeptProfile {...props} />,
+    addSubject: <AddSubject />,
+    editSubject: <AddSubject Subject={{}} />,
   };
   function DispComponent({ state }) {
     return <>{compEnum[state]}</>;
   }
   return (
-    <Row>
-      <Col md="auto">
-        <ProSidebar image={sidebarBg}>
-          <SidebarHeader>
-            <div
-              style={{
-                padding: "24px",
-                textTransform: "uppercase",
-                fontWeight: "bold",
-                fontSize: 14,
-                letterSpacing: "1px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
+    <>
+      <Row>
+        <Col>
+          <Button onClick={() => setshowNav(!showNav)}>&#9776;</Button>
+        </Col>
+      </Row>
+      <Row>
+        <Col md="auto">
+          <ProSidebar
+            image={sidebarBg}
+            collapsedWidth="0px"
+            collapsed={showNav}
+            className="sidenav"
+            id="mySidenav"
+          >
+            <span
+              class="closebtn"
+              style={{ cursor: "pointer" }}
+              onClick={() => setshowNav(!showNav)}
             >
-              Department Handle
-            </div>
-          </SidebarHeader>
+              &times;
+            </span>
+            <SidebarHeader>
+              <div
+                style={{
+                  padding: "24px",
+                  textTransform: "uppercase",
+                  fontWeight: "bold",
+                  fontSize: 14,
+                  letterSpacing: "1px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Department Handle
+              </div>
+            </SidebarHeader>
 
-          <SidebarContent>
-            <Menu iconShape="circle">
-              <MenuItem icon={<FaTachometerAlt />}>Dashboard</MenuItem>
-              <MenuItem icon={<FaGem />} onClick={() => setcomp("profile")}>
-                {" "}
-                Profile
-              </MenuItem>
-            </Menu>
-            <Menu iconShape="circle">
-              <SubMenu title="Manage Classes" icon={<FaRegLaughWink />}>
-                <MenuItem onClick={() => setcomp("addClass")}>
-                  Add Class
+            <SidebarContent>
+              <Menu iconShape="circle">
+                <MenuItem
+                  icon={<FaTachometerAlt />}
+                  onClick={() => setcomp("dashboard")}
+                >
+                  Dashboard
                 </MenuItem>
-                <SubMenu title={"Edit Class"}>
-                  <ShowAllClass
-                    particularClass={particularClass}
-                    setparticularClass={setparticularClass}
-                    onClick={() => setcomp("editClass")}
-                  />
+                <MenuItem icon={<FaGem />} onClick={() => setcomp("profile")}>
+                  {" "}
+                  Profile
+                </MenuItem>
+              </Menu>
+              <Menu iconShape="circle">
+                <SubMenu title="Manage Classes" icon={<FaRegLaughWink />}>
+                  <MenuItem onClick={() => setcomp("addClass")}>
+                    Add Class
+                  </MenuItem>
+                  <SubMenu title={"Edit Class"}>
+                    <ShowAllClass
+                      particularClass={particularClass}
+                      setparticularClass={setparticularClass}
+                      onClick={() => setcomp("editClass")}
+                    />
+                  </SubMenu>
                 </SubMenu>
-              </SubMenu>
-            </Menu>
-            <Menu iconShape="circle">
-              <SubMenu title="Manage Subjects" icon={<FaRegLaughWink />}>
-                <MenuItem onClick={() => setcomp("addSubject")}>
-                  Add Subject
-                </MenuItem>
-                <MenuItem onClick={() => setcomp("editSubject")}>
-                  Edit Subject
-                </MenuItem>
-                
-              </SubMenu>
-            </Menu>
-          </SidebarContent>
-        </ProSidebar>
-      </Col>
-      <Col>
-        <DispComponent state={comp} />
-      </Col>
-    </Row>
+              </Menu>
+              <Menu iconShape="circle">
+                <SubMenu title="Manage Subjects" icon={<FaRegLaughWink />}>
+                  <MenuItem onClick={() => setcomp("addSubject")}>
+                    Add Subject
+                  </MenuItem>
+                  <MenuItem onClick={() => setcomp("editSubject")}>
+                    Edit Subject
+                  </MenuItem>
+                </SubMenu>
+              </Menu>
+            </SidebarContent>
+          </ProSidebar>
+        </Col>
+        <Col>
+          <DispComponent state={comp} />
+        </Col>
+      </Row>
+    </>
   );
 };
 export default DepttPage;
