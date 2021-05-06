@@ -21,7 +21,8 @@ import { markAttendance } from "../redux/actions/attendance";
 import SideNav from "./navbar.css";
 import SeeClass from "../Components/SeeClass";
 import { SeeAttendanceForm } from "../Components/SeeAttendance";
-const TeacherPage = (props) => {
+import Dashboard from "../Components/Dashboard";
+const StudentPage = (props) => {
   const dispatch = useDispatch();
   const [comp, setcomp] = useState("dashboard");
   const [particularClass, setparticularClass] = useState(null);
@@ -46,7 +47,7 @@ let isMobile= (width <= 768);
   useEffect(() => {
     (async function () {
       try {
-        const data = await dispatch(dropDown({ teacherData: "1" }));
+        const data = await dispatch(dropDown({ studentData: "0" }));
         setteacherClass(data.class);
       } catch (err) {
         console.log(err);
@@ -55,7 +56,7 @@ let isMobile= (width <= 768);
     })();
   }, [dispatch]);
   const compEnum = {
-    dashboard: <><h1>DashBoard</h1><SeeAttendanceForm askDate={true}/></>,
+    dashboard: <Dashboard/>,
     profile: <TeacherProfile {...props} />,
     markAttendance: <AddAttendanceForm Class={Class} />,
     seeClass:<SeeClass Class={Class} isMobile={isMobile}/>
@@ -131,7 +132,7 @@ let isMobile= (width <= 768);
                               </>
                             }
                           >
-                            {Class.section.map((section) => {
+                            {/* {Class.section.map((section) => {
                               return (
                                 <SubMenu title={section.name}>
                                   {section.subject.map((subject) => {
@@ -153,7 +154,7 @@ let isMobile= (width <= 768);
                                   })}
                                 </SubMenu>
                               );
-                            })}
+                            })} */}
                           </SubMenu>
                         );
                       })}
@@ -170,7 +171,7 @@ let isMobile= (width <= 768);
                               </>
                             }
                           >
-                            {Class.section.map((section) => {
+                            {/* {Class.section.map((section) => {
                               return (
                                 <SubMenu title={section.name}>
                                   {section.subject.map((subject) => {
@@ -192,7 +193,7 @@ let isMobile= (width <= 768);
                                   })}
                                 </SubMenu>
                               );
-                            })}
+                            })} */}
                           </SubMenu>
                         );
                       })}
@@ -209,4 +210,4 @@ let isMobile= (width <= 768);
     </>
   );
 };
-export default TeacherPage;
+export default StudentPage;

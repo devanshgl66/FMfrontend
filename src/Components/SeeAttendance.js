@@ -11,37 +11,36 @@ import ModalMessage from './ModalMessage'
 import {Link} from 'react-router-dom'
 import { seeAttendance } from "../redux/actions/attendance";
 
-export const SeeAttendanceForm=(props)=>{
+export const SeeAttendanceForm=({setdata})=>{
     const dispatch = useDispatch()
     const [error,seterror]=useState(null)
     const [loading,setloading]=useState(false)
     const [success,setsuccess]=useState(false)
-    const [errorMessage, seterrorMessage] = useState("");
     async function seeAttendanceHandler(val, e) {
-      if(false)
-        return;
-      else{
+      
         e.preventDefault();
         const msg={seterror,setloading,setsuccess}
         // seterrorMessage("");
         msg.setloading(true)
 
         //DISPATCH THING HERE
-        console.log(val)
+        val={...val}  //removing the read only property.
+        val.subjectCode=val.subjectCode.toUpperCase()
+        // console.log(val)
         const response=await dispatch(seeAttendance(val))
         msg.setloading(false)
         if(response.success!==false){
-            msg.setsuccess({...response,success:undefined})
+            setdata(response)
+            // msg.setsuccess({...response,success:undefined})
         }
         else{
             console.log(response.err)
             msg.seterror(response.err)
         }
-      }
     }
     return(
         <>
-            <Container>
+            <>
       <Row className="justify-content-md-center">
         <Col md={6} xs={12}>
           <h1>See Attendance</h1>
@@ -100,44 +99,22 @@ export const SeeAttendanceForm=(props)=>{
                   type="text"
                   placeholder="subjectCode"
                   className="form-control"
+                  style={{textTransform:'uppercase'}}
                   required
                 />
-              </Col>
-            </Row>
-            <Row className="form-group">
-              <Col>
-                <Label htmlFor="subjectCode">Date</Label>
-                <Control.text
-                  model=".date"
-                  id="date"
-                  name="date"
-                  type="date"
-                  placeholder="date"
-                  className="form-control"
-                //   required
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                {errorMessage.length > 0 ? (
-                  <Message variant="danger">{errorMessage}</Message>
-                ) : (
-                  <></>
-                )}
               </Col>
             </Row>
             <Row>
               <Col>
                 <Button type="submit" color="primary">
-                  Mark Attendance
+                  Submit
                 </Button>
               </Col>
             </Row>
           </LocalForm>
         </Col>
       </Row>
-    </Container>
+    </>
     {loading?<ModalMessage isOpen={loading} toggle={()=>setloading(!loading)} header='Registration' variant='none'>
         <Loader/>
       </ModalMessage>:error!=null?<ModalMessage isOpen={error!=null} toggle={()=>seterror(null)} header='Registration' variant='danger'>

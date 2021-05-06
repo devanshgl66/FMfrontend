@@ -9,6 +9,7 @@ import { Chart } from "react-google-charts";
 import { Calendar } from "react-calendar";
 import { Table } from "reactstrap";
 import "react-calendar/dist/Calendar.css";
+import Graph from "./Graph";
 const SeeClass = ({ Class, isMobile }) => {
   const dispatch = useDispatch();
   const [attendance, setattendance] = useState({});
@@ -53,44 +54,10 @@ const SeeClass = ({ Class, isMobile }) => {
     })();
     // console.log('fl')
   }, [dispatch, date, Class]);
-  //   console.log(date);
-  //   console.log(present);
-  var graphData = attendance.attendance
-    ? attendance.attendance.map((at) => {
-        return [at.date.toString(), at.presentStudent.length];
-      })
-    : [];
   var allStudent = attendance.totalStudent ? attendance.totalStudent : [];
   return (
     <>
-      <Row>
-        <Col>
-          <h1 className="text-center text-white">Graph</h1>
-        </Col>
-      </Row>
-      {attendance.attendance ? (
-        <Row>
-          <Col md={6} className="col-md-offset-3 mx-auto">
-            <Chart
-              width={isMobile ? "100%" : "100%"}
-              height={"400px"}
-              chartType="LineChart"
-              loader={<Loader />}
-              data={[["x", "attendance"], ...graphData]}
-              options={{
-                hAxis: {
-                  title: "Date",
-                },
-                vAxis: {
-                  title: "Attendance",
-                },
-              }}
-            />
-          </Col>
-        </Row>
-      ) : (
-        <Loader />
-      )}
+     <Graph data={attendance}/>
       <br />
       <Row className="justify-content-center">
         {/* <Col xs={12} md={3}>

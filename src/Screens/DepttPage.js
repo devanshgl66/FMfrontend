@@ -26,6 +26,7 @@ import DeptProfile from "../Components/profile/Dept";
 import AddSubject from "../Components/AddSubject";
 import { editSubject } from "../redux/actions/subject";
 import SideNav from "./navbar.css";
+import { SeeAttendanceForm } from "../Components/SeeAttendance";
 // import '../NavStyle.css'
 const DepttPage = (props) => {
   const [comp, setcomp] = useState("dashboard");
@@ -33,7 +34,7 @@ const DepttPage = (props) => {
   const [showNav, setshowNav] = useState(true);
   console.log(particularClass)
   const compEnum = {
-    dashboard: <h1>DashBoard</h1>,
+    dashboard: <><h1>DashBoard</h1><SeeAttendanceForm askDate={false}/></>,
     addClass: <AddClass Class={null} />,
     editClass: <AddClass Class={particularClass} />,
     profile: <DeptProfile {...props} />,

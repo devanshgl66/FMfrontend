@@ -12,12 +12,14 @@ import DepttPage from './Screens/DepttPage';
 import { useSelector } from 'react-redux';
 import TeacherPage from './Screens/TeacherPage';
 import VerifyEmail from './Components/VerifyEmail';
+import StudentPage from './Screens/StudentPage';
 // import BarChart from './Components/linegraph/linegraph.component.js'
 function App() {
   const {user}  = useSelector(state => state.auth)
   // console.log(user)
   const userRoute={
-    0:<Route path='/' component={HomePage} exact/>,
+    'home':<Route path='/' render={(props)=><HomePage {...props}/>} exact/>,
+    0:<Route path='/' render={(props)=><StudentPage {...props}/>} exact/>,
     1:<Route path='/' render={(props)=><TeacherPage {...props}/>} exact/>,
     2:<Route path='/' render={(props)=><DepttPage {...props}/>} exact/>
   }
@@ -39,7 +41,7 @@ function App() {
           <Route path='/seeAttendance' render={(props)=><SeeAttendanceForm  location={props.location} history={props.history} user='Teacher'/>}/>
           {/* <Route path='/addClass' render={(props)=><AddClass/>}/>
           <Route path='/temp' render={(props)=><ShowAllClass/>}/> */}
-          {user?<DispUserRoute state={user.role||0}/>:<></>}
+          {user?<DispUserRoute state={user.role}/>:<><DispUserRoute state='home'/></>}
         </Container>
       </main>
     </BrowserRouter>
