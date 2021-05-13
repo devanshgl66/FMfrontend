@@ -10,7 +10,7 @@ import Avatar from 'react-avatar-edit'
 import Loader from '../Loader'
 import ModalMessage from '../ModalMessage'
 import { updateUser } from '../../redux/actions/authAction';
-const TeacherProfile=(props)=>{
+const StudentProfile=(props)=>{
   const dispatch = useDispatch()
   const [error,seterror]=useState(null)
   const [loading,setloading]=useState(false)
@@ -36,7 +36,7 @@ const TeacherProfile=(props)=>{
     async function updateProfile(value){
       const msg={seterror,setloading,setsuccess}
       seterrorMessage("");
-        const val={...value,role:1,profilePic:preview}
+        const val={...value,role:0,profilePic:preview}
         msg.setloading(true)
         const err=await dispatch(updateUser(val))
         msg.setloading(false)
@@ -102,7 +102,54 @@ const TeacherProfile=(props)=>{
                 />
               </Col>
             </Row>
-            
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="rollNo">Roll No.</Label>
+                <Control.text
+                type='number'
+                  model=".rollNo"
+                  id="rollNo"
+                  name="rollNo"
+                  placeholder="rollNo"
+                  className="form-control"
+                  defaultValue={user.rollNo}
+                  disabled={true}
+                  required
+                />
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col>
+                <Label htmlFor="branch">Branch Code</Label>
+                <Control.text
+                type='number'
+                  model=".branch"
+                  id="branch"
+                  name="branch"
+                  placeholder="branch"
+                  className="form-control"
+                  defaultValue={user.branch}
+                  disabled={true}
+                  required
+                />
+              </Col>
+            </Row><Row className="form-group">
+              <Col>
+                <Label htmlFor="yearOfStart">Year of Start</Label>
+                <Control.text
+                type='number'
+                  model=".yearOfStart"
+                  id="yearOfStart"
+                  name="yearOfStart"
+                  placeholder="yearOfStart"
+                  className="form-control"
+                  defaultValue={user.yearOfStart}
+                  disabled={true}
+                  required
+                />
+              </Col>
+            </Row>
+
             <Row>
               <Col>
                 {errorMessage.length > 0 ? (
@@ -130,4 +177,4 @@ const TeacherProfile=(props)=>{
         </>
     )
 }
-export default TeacherProfile;
+export default StudentProfile;

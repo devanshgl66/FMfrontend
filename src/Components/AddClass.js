@@ -196,6 +196,7 @@ const AddClass = ({Class}) => {
   const [section, setsection] = useState([]);
   const [yearOfStart, setyearOfStart] = useState("");
   const [rollNo, setrollNo] = useState([]);
+  const [branch, setbranch] = useState(Class.branchCode?Class.branchCode:'')
   const [attendance, setattendance] = useState([]);
   const [error, seterror] = useState(null);
   const [loading, setloading] = useState(false);
@@ -228,7 +229,7 @@ const AddClass = ({Class}) => {
     });
     
     const class1 = {
-      branchCode: user.branch,
+      branchCode: branch,
       yearOfStart,
       section: finalSection,
     };
@@ -242,7 +243,7 @@ const AddClass = ({Class}) => {
     msg.setloading(true);
 
     //DISPATCH THING HERE
-    // console.log(val)
+    console.log(class1)
      const response = Class==null?await dispatch(addClass(class1)):await dispatch(editClass(class1))
    
     console.log(response)
@@ -297,11 +298,14 @@ const AddClass = ({Class}) => {
             >
               <Form.Group controlId="branch Code">
                 <Form.Label>Branch Code</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={user.branch}
-                  disabled={true}
-                />
+                <Form.Control as='select'
+                  disabled={Class!==null}
+                >
+                  {Class!==null?<option>{Class.branchCode}</option>:<></>}
+                  {user.branch.map(br=>(
+                    <option onClick={()=>setbranch(br)}>{br}</option>
+                  ))}
+                </Form.Control>
               </Form.Group>
               <Form.Group controlId="Year of Start">
                 <Form.Label>Year of Start</Form.Label>

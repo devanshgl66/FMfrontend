@@ -1,52 +1,65 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container, Button, Form, Breadcrumb, BreadcrumbItem } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Container,
+  Button,
+  Form,
+  Breadcrumb,
+  BreadcrumbItem,
+} from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { sendOTP, verifyAccount } from "../redux/actions/authAction";
-import Loader from './Loader'
-import ModalMessage from './ModalMessage'
+import Loader from "./Loader";
+import ModalMessage from "./ModalMessage";
 function VerifyEmail(props) {
-  const dispatch = useDispatch()
-  const role=parseInt(props.location.pathname.split('/')[2])
-  const data=props.location.state
+  const dispatch = useDispatch();
+  const role = parseInt(props.location.pathname.split("/")[2]);
+  const data = props.location.state;
   const [otp, setotp] = useState(null);
-  const [error,seterror]=useState(null)
-  const [loading,setloading]=useState(false)
-  const [success,setsuccess]=useState(false)
+  const [error, seterror] = useState(null);
+  const [loading, setloading] = useState(false);
+  const [success, setsuccess] = useState(false);
   //PENDING
   useEffect(() => {
-      async function f(){
-          const res=await dispatch(sendOTP({email:data.email,role:data.role,type:'verifyEmail'}))
-          // console.log(typeof(res))
-      }
-      f() 
-  }, [dispatch,props,role,data])
-
+    async function f() {
+      const res = await dispatch(
+        sendOTP({ email: data.email, role: data.role, type: "verifyEmail" })
+      );
+      // console.log(typeof(res))
+    }
+    f();
+  }, [dispatch, props, role, data]);
 
   //PENDING
-  async function handleOTP(){
-    setloading(true)
-    const res=await dispatch(verifyAccount({email:data.email,role:data.role,otp:otp}))
+  async function handleOTP() {
+    setloading(true);
+    const res = await dispatch(
+      verifyAccount(
+        { email: data.email, role: data.role, otp: otp },
+        !data.loggedIn
+      )
+    );
     setTimeout(() => {
-      setloading(false)
-    console.log(res)
-    if(res.success==true)
-      setsuccess(true)
-    else 
-      seterror(res.err)
+      setloading(false);
+      console.log(res);
+      if (res.success == true) setsuccess(true);
+      else seterror(res.err);
     }, 5000);
-    
   }
-  
+
   return (
     <>
       <Container>
         <Row>
           <Col>
-          <Breadcrumb>
-        <BreadcrumbItem><Link to="/">Home</Link></BreadcrumbItem>
-        <BreadcrumbItem active>Verify Account</BreadcrumbItem>
-      </Breadcrumb>
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <Link to="/">Home</Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem active>Verify Account</BreadcrumbItem>
+            </Breadcrumb>
           </Col>
         </Row>
         <Row>
@@ -64,7 +77,12 @@ function VerifyEmail(props) {
         </Row>
         <Row className="justify-content-md-center">
           <Col md={6} xs={12}>
-            <Form onSubmit={e=>{e.preventDefault();handleOTP()}}>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleOTP();
+              }}
+            >
               <Form.Group controlId="email">
                 <Form.Label>OTP</Form.Label>
                 <Form.Control
@@ -81,13 +99,36 @@ function VerifyEmail(props) {
           </Col>
         </Row>
       </Container>
-      {loading?<ModalMessage isOpen={loading} toggle={()=>setloading(!loading)} header='Verify Email' variant='none'>
-        <Loader/>
-      </ModalMessage>:error!=null?<ModalMessage isOpen={error!=null} toggle={()=>seterror(null)} header='Verify Email' variant='danger'>
-        {error}
-      </ModalMessage>:success?<ModalMessage isOpen={success} toggle={()=>setsuccess(!success)} header='Verify Email' variant='success'>
-        Account Verified. Go to <Link to='/'>HOME</Link> page
-      </ModalMessage>:<></>}
+      {loading ? (
+        <ModalMessage
+          isOpen={loading}
+          toggle={() => setloading(!loading)}
+          header="Verify Email"
+          variant="none"
+        >
+          <Loader />
+        </ModalMessage>
+      ) : error != null ? (
+        <ModalMessage
+          isOpen={error != null}
+          toggle={() => seterror(null)}
+          header="Verify Email"
+          variant="danger"
+        >
+          {error}
+        </ModalMessage>
+      ) : success ? (
+        <ModalMessage
+          isOpen={success}
+          toggle={() => setsuccess(!success)}
+          header="Verify Email"
+          variant="success"
+        >
+          Account Verified. Go to <Link to="/">HOME</Link> page
+        </ModalMessage>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

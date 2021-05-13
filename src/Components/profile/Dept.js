@@ -2,26 +2,22 @@
 /* eslint-disable react/jsx-pascal-case */
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, Form } from "react-bootstrap";
 import { LocalForm, Control } from "react-redux-form";
 import { Label } from "reactstrap";
 import Message from "../Message";
 import Avatar from "react-avatar-edit";
 import Loader from "../Loader";
 import ModalMessage from "../ModalMessage";
+import {RiDeleteBin6Line} from 'react-icons/ri'
+import {CgAdd} from 'react-icons/cg'
 import { updateUser } from "../../redux/actions/authAction";
 const DeptProfile = (props) => {
   const dispatch = useDispatch();
-  const [error, seterror] = useState(null);
-  const [loading, setloading] = useState(false);
-  const [success, setsuccess] = useState(false);
-  const { user } = useSelector((state) => state.auth);
-  // console.log(user)
-  // console.log('hlo')
-  const [profilePic, setprofilePic] = useState(user ? user.profilePic : null);
+  var { user } = useSelector((state) => state.auth);
+  const [newuser, setnewuser] = useState({ ...user });
   const [preview, setpreview] = useState(null);
-  const [errorMessage, seterrorMessage] = useState("");
-  if (!user) return <>Login first.</>;
+  if (!user) return <h1>Login first.</h1>;
 
   function onClose() {
     setpreview(null);
@@ -30,22 +26,31 @@ const DeptProfile = (props) => {
   function onCrop(preview) {
     setpreview(preview);
   }
-  async function updateProfile(value) {
-    const msg = { seterror, setloading, setsuccess };
-    seterrorMessage("");
-    const val = { ...value, role: 2, profilePic: preview };
-    msg.setloading(true);
-    const err = await dispatch(updateUser(val));
-    msg.setloading(false);
-    if (err == null) msg.setsuccess(true);
-    else msg.seterror(err);
+  async function updateProfile() {
+    // seterrorMessage("");
+    const val = { ...newuser, role: 2, profilePic: preview };
+    console.log(val)
+    props.setloading(true);
+    const err=await dispatch(updateUser(val))
+    
+    props.setloading(false);
+    if (err == null){
+      // console.log('hlo')
+      props.setsuccess('Profile Updated Successfully');
+      // console.log(success)
+    }
+    else props.seterror(err);
+    // setsuccess('gl')
+    return false;
   }
+  // console.log(success)
   return (
     <>
-      <LocalForm
-        onSubmit={(values, e) => {
+      <Form
+        onSubmit={(e) => {
           e.preventDefault();
-          updateProfile(values);
+          updateProfile()
+          e.preventDefault()
         }}
       >
         <Row className="form-group">
@@ -56,27 +61,21 @@ const DeptProfile = (props) => {
               height={295}
               onCrop={onCrop}
               onClose={onClose}
-              src={profilePic}
+              src={newuser.profilePic}
             />
             <img src={preview} alt="Preview" />
           </Col>
         </Row>
-        <Row className="form-group">
-          <Col>
-            <Label htmlFor="email">Email</Label>
-            <Control.text
-              model=".email"
-              id="email"
-              name="email"
-              type="email"
-              placeholder="email"
-              className="form-control"
-              required
-              defaultValue={user.email}
-              disabled={true}
-            />
-          </Col>
-        </Row>
+        <Form.Group controlId="email">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="text"
+            value={newuser.email}
+            onChange={(e) => setnewuser({ ...newuser, email: e.target.value })}
+            required
+            disabled={true}
+          />
+        </Form.Group>
         <Row>
           <Col>
             {user.verified === false ? (
@@ -86,6 +85,7 @@ const DeptProfile = (props) => {
                     props.history.push(`/verifyAccount/${user.role}`, {
                       email: user.email,
                       role: user.role,
+                      loggedIn:true
                     });
                   }}
                 >
@@ -103,45 +103,45 @@ const DeptProfile = (props) => {
             )}
           </Col>
         </Row>
-        <Row className="form-group">
-          <Col>
-            <Label htmlFor="firstname">Name</Label>
-            <Control.text
-              model=".name"
-              id="name"
-              name="name"
-              placeholder="name"
-              className="form-control"
-              defaultValue={user.name}
-              required
-            />
-          </Col>
-        </Row>
-        <Row className="form-group">
-          <Col>
-            <Label htmlFor="branch">Branch Code</Label>
-            <Control.text
-              type="number"
-              model=".branch"
-              id="branch"
-              name="branch"
-              placeholder="branch"
-              className="form-control"
-              required
-              defaultValue={user.branch}
-              disabled={true}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            {errorMessage.length > 0 ? (
-              <Message variant="danger">{errorMessage}</Message>
-            ) : (
-              <></>
-            )}
-          </Col>
-        </Row>
+
+        <Form.Group controlId="name">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            value={newuser.name}
+            onChange={(e) => setnewuser({ ...newuser, name: e.target.value })}
+            required
+            disabled={false}
+          />
+        </Form.Group>
+        <Form.Group controlId="branch">
+          <Form.Label>Branch</Form.Label>
+          <Button onClick={()=>{
+            var br=[...newuser.branch,'']
+            setnewuser({...newuser,branch:br})
+          }}><CgAdd/></Button>
+          {newuser.branch.map((branch,idx)=>(
+            <>
+            <Form.Control
+            type="number"
+            value={branch}
+            min={1}
+            onChange={(e) => {
+              var br=[...newuser.branch];
+              br[idx]=e.target.value
+              setnewuser({...newuser,branch:br})
+            }}
+            required
+            disabled={false}
+          />
+          <Button onClick={()=>{
+            var br=[...newuser.branch]
+            br.splice(idx,1)
+            setnewuser({...newuser,branch:br})
+          }}><RiDeleteBin6Line/></Button>
+          </>
+          ))}          
+        </Form.Group>
         <Row>
           <Col>
             <Button type="submit" color="primary">
@@ -149,37 +149,8 @@ const DeptProfile = (props) => {
             </Button>
           </Col>
         </Row>
-      </LocalForm>
-      {loading ? (
-        <ModalMessage
-          isOpen={loading}
-          toggle={() => setloading(!loading)}
-          header="Registration"
-          variant="none"
-        >
-          <Loader />
-        </ModalMessage>
-      ) : error != null ? (
-        <ModalMessage
-          isOpen={error != null}
-          toggle={() => seterror(null)}
-          header="Registration"
-          variant="danger"
-        >
-          {error}
-        </ModalMessage>
-      ) : success ? (
-        <ModalMessage
-          isOpen={success}
-          toggle={() => setsuccess(!success)}
-          header="Registration"
-          variant="success"
-        >
-          Profile Updated
-        </ModalMessage>
-      ) : (
-        <></>
-      )}
+      </Form>
+      
     </>
   );
 };

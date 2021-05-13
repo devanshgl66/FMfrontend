@@ -21,6 +21,7 @@ import { markAttendance } from "../redux/actions/attendance";
 import SideNav from "./navbar.css";
 import SeeClass from "../Components/SeeClass";
 import { SeeAttendanceForm } from "../Components/SeeAttendance";
+import Dashboard from "../Components/Dashboard";
 const TeacherPage = (props) => {
   const dispatch = useDispatch();
   const [comp, setcomp] = useState("dashboard");
@@ -55,7 +56,7 @@ let isMobile= (width <= 768);
     })();
   }, [dispatch]);
   const compEnum = {
-    dashboard: <><h1>DashBoard</h1><SeeAttendanceForm askDate={true}/></>,
+    dashboard: <Dashboard/>,
     profile: <TeacherProfile {...props} />,
     markAttendance: <AddAttendanceForm Class={Class} />,
     seeClass:<SeeClass Class={Class} isMobile={isMobile}/>

@@ -76,7 +76,10 @@ const Header = () => {
                       Student
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/register/1">
-                      teacher
+                      Teacher
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/register/2">
+                      Department
                     </NavDropdown.Item>
                   </NavDropdown>
                 </>

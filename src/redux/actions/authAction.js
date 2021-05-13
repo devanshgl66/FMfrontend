@@ -47,20 +47,26 @@ export const userRegister = (user = {}) => async (dispatch, getState) => {
   //   user.name=`student${j}`
   //   user.password=`student${j}`
   //   user.rollNo=parseInt(`1700100100${j}`)
-    try {
+  try {
     // console.log(user);
     let fd = new FormData();
-    for (var it in user) if (it != "profilePic") fd.append(it, user[it]);
-    if(user.profilePic)
-    {var block = user.profilePic.split(";");
-    // Get the content type of the image
-    var contentType = block[0].split(":")[1]; // In this case "image/gif"
-    // get the real base64 content of the file
-    var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
+    for (var it in user) {
+      if (Array.isArray(user[it]))
+        for (var item of user[it]) fd.append(`${it}[]`, (item));
+      else if (it != "profilePic") fd.append(it, user[it]);
+      else if (user.profilePic) {
+        var block = user.profilePic.split(";");
+        // Get the content type of the image
+        var contentType = block[0].split(":")[1]; // In this case "image/gif"
+        // get the real base64 content of the file
+        var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
 
-    // Convert it to a blob to upload
-    var blob = b64toBlob(realData, contentType);
-    fd.append("profilePic", blob);}
+        // Convert it to a blob to upload
+        var blob = b64toBlob(realData, contentType);
+        fd.append("profilePic", blob);
+      }
+    }
+
     if (user.role == 0) {
       // console.log(user.images.length)
       for (var i = 0; i < user.images.length; i++) {
@@ -84,31 +90,48 @@ export const userRegister = (user = {}) => async (dispatch, getState) => {
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
-        console.log(errorStr);
+    console.log(errorStr);
     return errorStr;
   }
   // }
-  
 };
 export const updateUser = (user) => async (dispatch, getState) => {
   try {
-    // console.log(user)
+    console.log(user)
     let fd = new FormData();
-    for (var it in user) if (it != "profilePic") fd.append(it, user[it]);
-    var block = user.profilePic.split(";");
-    // Get the content type of the image
-    var contentType = block[0].split(":")[1]; // In this case "image/gif"
-    // get the real base64 content of the file
-    var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
+    for (var it in user) {
+      if (Array.isArray(user[it]))
+        for (var item of user[it]) {console.log(item);fd.append(`${it}[]`, (item));}
+      else if (it != "profilePic") fd.append(it, user[it]);
+      else if (user.profilePic) {
+        var block = user.profilePic.split(";");
+        // Get the content type of the image
+        var contentType = block[0].split(":")[1]; // In this case "image/gif"
+        // get the real base64 content of the file
+        var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
 
-    // Convert it to a blob to upload
-    var blob = b64toBlob(realData, contentType);
-    fd.append("profilePic", blob);
+        // Convert it to a blob to upload
+        var blob = b64toBlob(realData, contentType);
+        fd.append("profilePic", blob);
+      }
+    }
 
+    //     if (it != "profilePic") fd.append(it, user[it]);
+    //     if(user.profilePic){
+    //     var block = user.profilePic.split(";");
+    //     // Get the content type of the image
+    //     var contentType = block[0].split(":")[1]; // In this case "image/gif"
+    //     // get the real base64 content of the file
+    //     var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
+
+    //     // Convert it to a blob to upload
+    //     var blob = b64toBlob(realData, contentType);
+    //     fd.append("profilePic", blob);
+    // }
     const { data } = await axios.put("/users/" + user.role, fd);
     const newuser = data;
-    newuser.role=user.role
-    localStorage.setItem('user',JSON.stringify(newuser))
+    newuser.role = user.role;
+    localStorage.setItem("user", JSON.stringify(newuser));
     await dispatch({ type: USER_UPDATE_PROFILE, payload: newuser });
     return null;
   } catch (error) {
@@ -166,27 +189,31 @@ export const userLogout = ({ role }) => async (dispatch) => {
 };
 export const sendOTP = (val) => async (dispatch) => {
   try {
-    const {data}=await axios.post(`/users/sendOTP`,val);
-    return data
+    const { data } = await axios.post(`/users/sendOTP`, val);
+    return data;
   } catch (error) {
-    const errormsg=error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
+    const errormsg =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
     console.log(errormsg);
-    return {success:false,err:errormsg}
+    return { success: false, err: errormsg };
   }
 };
-export const verifyAccount=(val)=>async(dispatch)=>{
-  try { 
-    const {data}=await axios.post(`/users/verifyAccount`,val);
-    data.user.role=val.role
-    await dispatch({type:USER_UPDATE_PROFILE,payload:data.user})
-    return data
-  }  catch (error) {
-    const errormsg=error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
+export const verifyAccount = (val,removeUser=false) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(`/users/verifyAccount`, val);
+    data.user.role = val.role;
+    await dispatch({ type: USER_UPDATE_PROFILE, payload: data.user });
+    if(removeUser)
+      localStorage.removeItem('user')
+    return data;
+  } catch (error) {
+    const errormsg =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
     console.log(errormsg);
-    return {success:false,err:errormsg}
+    return { success: false, err: errormsg };
   }
-}
+};

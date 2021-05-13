@@ -5,13 +5,9 @@ import { SeeAttendanceForm } from "./SeeAttendance";
 
 const Dashboard = () => {
   const [data, setdata] = useState(undefined);
+  // console.log(data)
   return (
     <>
-      <Row>
-        <Col>
-          <h1>DashBoard</h1>
-        </Col>
-      </Row>
       <SeeAttendanceForm setdata={setdata} />
       <br/>
       <Graph data={data} />

@@ -40,9 +40,8 @@ export const SeeAttendanceForm=({setdata})=>{
     }
     return(
         <>
-            <>
-      <Row className="justify-content-md-center">
-        <Col md={6} xs={12}>
+      <>
+        <>
           <h1>See Attendance</h1>
           <LocalForm
             onSubmit={(values, e) => {e.preventDefault(); seeAttendanceHandler(values, e)}}
@@ -112,9 +111,8 @@ export const SeeAttendanceForm=({setdata})=>{
               </Col>
             </Row>
           </LocalForm>
-        </Col>
-      </Row>
-    </>
+        </>
+      </>
     {loading?<ModalMessage isOpen={loading} toggle={()=>setloading(!loading)} header='Registration' variant='none'>
         <Loader/>
       </ModalMessage>:error!=null?<ModalMessage isOpen={error!=null} toggle={()=>seterror(null)} header='Registration' variant='danger'>

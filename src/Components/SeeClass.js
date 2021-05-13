@@ -16,10 +16,11 @@ const SeeClass = ({ Class, isMobile }) => {
   const [date, setdate] = useState(new Date());
   const [absentees, setabsentees] = useState();
   const [present, setpresent] = useState("Loading");
+  console.log(Class)
   useEffect(() => {
     (async function () {
       const res = await dispatch(viewClass(Class));
-      //   console.log(res);
+        // console.log(res);
       if (res.success === true) {
         setattendance(res.class);
         var pre = res.class.attendance.filter((at) => {
