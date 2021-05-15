@@ -21,7 +21,6 @@ function VerifyEmail(props) {
   const [error, seterror] = useState(null);
   const [loading, setloading] = useState(false);
   const [success, setsuccess] = useState(false);
-  //PENDING
   useEffect(() => {
     async function f() {
       const res = await dispatch(
@@ -30,7 +29,7 @@ function VerifyEmail(props) {
       // console.log(typeof(res))
     }
     f();
-  }, [dispatch, props, role, data]);
+  }, []);
 
   //PENDING
   async function handleOTP() {

@@ -33,12 +33,12 @@ const RangeSelector = ({ fields, setFields,pos }) => {
     <>
       {/* <h1>Hello CodeSandbox</h1> */}
 
-      <button type="button" onClick={() => handleAdd()}>
+      <Button type="button" onClick={() => handleAdd()}>
         Add range
-      </button>
+      </Button>
       <br/>
       {fields[pos]&&fields[pos].map((field, idx) => {
-        console.log(field)
+        // console.log(field)
         return (
           <span key={`${field}-${idx}`}>
             {
@@ -57,9 +57,9 @@ const RangeSelector = ({ fields, setFields,pos }) => {
                   onChange={(e) => handleChange(idx, "ending", e)}
                   required
                 />{" "}
-                <button type="button" as='span' onClick={() => handleRemove(idx)}>
+                <Button type="button" as='span' onClick={() => handleRemove(idx)}>
                   X
-                </button>
+                </Button>
                 <br/>
               </>
             }

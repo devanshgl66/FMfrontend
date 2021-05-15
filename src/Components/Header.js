@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../redux/actions/authAction";
 import Loader from "./Loader";
 import Message from "./Message";
+import logo from './logo.jpeg'
 const Header = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -21,20 +22,19 @@ const Header = () => {
     setloading(true);
   };
   return (
-    <header>
+    <header >
       {/* {loading===true&&<Message variant='success'>You are logout</Message>} */}
       {loading === false && <Loader />}
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
-        {/* Container removed in below line */}
+      <Navbar expand="lg" variant='dark' bg='primary' collapseOnSelect>
         <Container fluid>
           <LinkContainer to="/">
-            <Navbar.Brand href="/">
+            <Navbar.Brand href="/" className='mx-auto'>
               <img
                 style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-                src="logo192.png"
-                alt="pending logo"
+                src={logo}
+                alt="logo"
               />
-              Name of project
+              < >One Click</>
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

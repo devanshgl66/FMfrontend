@@ -55,9 +55,9 @@ const AddSubject = ({ fields, setFields, pos }) => {
     <>
       {/* <h1>Hello CodeSandbox</h1> */}
 
-      <button type="button" onClick={() => handleAdd()}>
+      <Button type="button" onClick={() => handleAdd()}>
         Add Subject
-      </button>
+      </Button>
       <br />
       {fields[pos]&&fields[pos].map((field, idx) => {
         // console.log(field)
@@ -86,13 +86,13 @@ const AddSubject = ({ fields, setFields, pos }) => {
                   />
                 </Form.Group>
 
-                <button
+                <Button
                   type="button"
                   as="span"
                   onClick={() => handleRemove(idx)}
                 >
                   Remove Subject
-                </button>
+                </Button>
               </>
             }
           </span>
@@ -139,10 +139,10 @@ const AddSection = ({
     <>
       {/* <h1>Hello CodeSandbox</h1> */}
       <br />
-      <button type="button" onClick={() => handleAdd()}>
+      <Button type="button" onClick={() => handleAdd()}>
         Add section
-      </button>
-
+      </Button>
+      <br/>
       {fields.map((field, idx) => {
         //   console.log(field)
         return (
@@ -175,13 +175,13 @@ const AddSection = ({
                     pos={field.attendance.pos}
                   />
                 </Form.Group>
-                <button
+                <Button
                   type="button"
                   as="span"
                   onClick={() => handleRemove(idx)}
                 >
                   Cancel Section
-                </button>
+                </Button>
               </>
             }
           </div>
@@ -191,13 +191,24 @@ const AddSection = ({
   );
 };
 const AddClass = ({Class}) => {
+  console.log(Class)
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth); //for getting branch Code
-  const [section, setsection] = useState([]);
+  const [section, setsection] = useState([{
+    name: { value: "" },
+    students: { pos: 0},
+    attendance: { pos: 0 },
+  }]);
   const [yearOfStart, setyearOfStart] = useState("");
-  const [rollNo, setrollNo] = useState([]);
-  const [branch, setbranch] = useState(Class.branchCode?Class.branchCode:'')
-  const [attendance, setattendance] = useState([]);
+  const [rollNo, setrollNo] = useState([[{
+    starting: { value: null },
+    ending: { value: null },
+  }]]);
+  const [branch, setbranch] = useState(Class?Class.branchCode:user.branch[0])
+  const [attendance, setattendance] = useState([[{
+    teacherId: '',
+    subjectId: '',
+  }]]);
   const [error, seterror] = useState(null);
   const [loading, setloading] = useState(false);
   const [success, setsuccess] = useState(false);
@@ -325,7 +336,7 @@ const AddClass = ({Class}) => {
                 attendance={attendance}
                 setattendance={setattendance}
               />
-              <Button type="submit">{Class===null?<h3>Add Class</h3>:<h3>Edit Class</h3>}</Button>
+              <Button  type="submit">{Class===null?<h3>Add Class</h3>:<h3>Edit Class</h3>}</Button>
               {Class===null?<></>:<Button onClick={()=>removeClass()}><h3>Remove Class</h3></Button>}
             </Form>
       {loading ? (

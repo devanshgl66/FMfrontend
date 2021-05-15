@@ -51,6 +51,8 @@ const AddSubject = ({Subject}) => {
             msg.setsuccess(true)
     }
     else msg.seterror(response.err);
+    Subject==null?setShowMessage('addSubject'):
+    setShowMessage('editSubject')
     // console.log(error)
     // console.log(success)
   };

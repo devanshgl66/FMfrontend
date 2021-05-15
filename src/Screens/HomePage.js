@@ -8,11 +8,11 @@ import jatin from './jatin.jpg'
 const HomePage = () => {
   const features=[
     'Significantly improves efficiency of class by reducing the attendance time',
-    'Reduces the changes of proxy to 0%',
+    'Reduces the chances of proxy to 0%',
     'Make your organisation free from hactic attendance registers',
     'Allow Students to see their daily attendance and sends mail to every absentees',
     'Allow teachers to see various insights about the attendance of students',
-    'Supports multiple department,multiple branches and multiple sections'
+    'Support multiple department,multiple branches and multiple sections'
   ]
   const creater=[{name:'Devansh Goyal',image:devansh},{name:'Jatin Kaushik',image:jatin}]
   return (
@@ -25,7 +25,7 @@ const HomePage = () => {
       </Row>
       <Row>
         <Col>
-          <img src={photo} className='rounded mx-auto d-block' alt='logo'/>
+          <img src={photo} height='200vh' className='rounded mx-auto d-block' alt='logo'/>
         </Col>
       </Row>
       <Row >

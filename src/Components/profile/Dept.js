@@ -17,6 +17,7 @@ const DeptProfile = (props) => {
   var { user } = useSelector((state) => state.auth);
   const [newuser, setnewuser] = useState({ ...user });
   const [preview, setpreview] = useState(null);
+  const [errorMessage, seterrorMessage] = useState()
   if (!user) return <h1>Login first.</h1>;
 
   function onClose() {
@@ -27,9 +28,13 @@ const DeptProfile = (props) => {
     setpreview(preview);
   }
   async function updateProfile() {
-    // seterrorMessage("");
+    if(newuser.branch.length==0){
+      seterrorMessage('Atleast one branch required')
+      return;
+    }
+    seterrorMessage("");
     const val = { ...newuser, role: 2, profilePic: preview };
-    console.log(val)
+    // console.log(val)
     props.setloading(true);
     const err=await dispatch(updateUser(val))
     
@@ -144,13 +149,17 @@ const DeptProfile = (props) => {
         </Form.Group>
         <Row>
           <Col>
+            {errorMessage?<div className='alert alert-danger w-25 ' >{errorMessage}</div>:<></>}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <Button type="submit" color="primary">
               Update Profile
             </Button>
           </Col>
         </Row>
       </Form>
-      
     </>
   );
 };

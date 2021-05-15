@@ -4,7 +4,9 @@ import {
   SEE_ATTENDANCE_ERROR,
   SEE_ATTENDANCE_LOADING,
 } from "../ActionType";
-
+import {BaseUrl} from '../../Base'
+axios.defaults.baseURL = BaseUrl;
+axios.defaults.withCredentials=true
 export const markAttendance = (details) => async (dispatch) => {
   try {
     console.log(details)

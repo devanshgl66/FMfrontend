@@ -1,6 +1,11 @@
 import axios from "axios";
 import { ADD_CLASS_ERROR, ADD_CLASS_SUCCESS, PARTICULAR_CLASS_ERROR, PARTICULAR_CLASS_SUCCESS } from "../ActionType";
 
+import {BaseUrl} from '../../Base'
+axios.defaults.baseURL = BaseUrl;
+axios.defaults.withCredentials=true
+
+// axios.defaults.
 export const addClass = (class1) => async (dispatch) => {
     try {
       const { data } = await axios.post("/class/addClass", class1);
@@ -50,13 +55,14 @@ export const addClass = (class1) => async (dispatch) => {
   export const dropDown=(param)=>async (dispatch)=>{
     try {
       const {data}=await axios.get('/class/get_data',{params:param})
-      // console.log(data)
+      console.log(data)
       return {success:true,class:data}
     } catch (error) {
+      // console.log(errorStr)
       const errorStr=error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-      // console.log(errorStr)
+      console.log(errorStr)
       return {success:false,error:errorStr}
     }
   }

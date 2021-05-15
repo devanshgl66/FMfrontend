@@ -1,5 +1,9 @@
 import axios from "axios";
 import { ADD_SUBJECT, DELETE_SUBJECT, EDIT_SUBJECT, ERROR_SUBJECT, GET_SUBJECT } from "../ActionType";
+
+import {BaseUrl} from '../../Base'
+axios.defaults.baseURL = BaseUrl;
+axios.defaults.withCredentials=true
 export const addSubject = (subject) => async (dispatch) => {
     try {
       const { data } = await axios.post("/subject/", subject);

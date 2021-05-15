@@ -7,6 +7,9 @@ import {
   USER_UPDATE_PROFILE,
 } from "../ActionType";
 import cookie from "react-cookies";
+import {BaseUrl} from '../../Base'
+axios.defaults.baseURL = BaseUrl;
+axios.defaults.withCredentials=true
 // function to convert base64 image to image
 function divideProfilePic(profilePic) {
   var div = [];
@@ -157,7 +160,7 @@ export const userLogin = (email, password, role) => async (
     //breaking profile pic and storing it in cookie
     dispatch({ type: USER_LOGIN_SUCCESS, payload: user });
     localStorage.setItem("user", JSON.stringify(user));
-
+    cookie.save('token',data.accesstoken)
     // return true
   } catch (error) {
     dispatch({
@@ -175,6 +178,7 @@ export const userLogin = (email, password, role) => async (
 export const userLogout = ({ role }) => async (dispatch) => {
   dispatch({ type: USER_LOGOUT });
   localStorage.removeItem("user");
+  cookie.remove('token')
   // var cookies=cookie.loadAll()
   // Object.keys(cookies).forEach(cook => {
   //   if(cook.startsWith('profilePic'))
@@ -204,9 +208,8 @@ export const verifyAccount = (val,removeUser=false) => async (dispatch) => {
   try {
     const { data } = await axios.post(`/users/verifyAccount`, val);
     data.user.role = val.role;
-    await dispatch({ type: USER_UPDATE_PROFILE, payload: data.user });
-    if(removeUser)
-      localStorage.removeItem('user')
+    if(!removeUser)
+      await dispatch({ type: USER_UPDATE_PROFILE, payload: data.user });
     return data;
   } catch (error) {
     const errormsg =
