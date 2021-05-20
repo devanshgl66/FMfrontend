@@ -35,13 +35,13 @@ function App() {
   }, []);
   const { user } = useSelector((state) => state.auth);
   const newprop = {
-    isMobile: width ,
+    isMobile: width,
     loading,
     success,
     error,
     setsuccess,
     setloading,
-    seterror ,
+    seterror,
     heading,
     setheading,
   };

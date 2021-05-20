@@ -15,7 +15,7 @@ const HomePage = () => {
     'Support multiple department,multiple branches and multiple sections'
   ]
   const creater=[{name:'Devansh Goyal',image:devansh},{name:'Jatin Kaushik',image:jatin}]
-  return (
+    return (
     <>
     <Container>
       <Row >

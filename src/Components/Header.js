@@ -28,18 +28,19 @@ const Header = () => {
       <Navbar expand="lg" variant='dark' bg='primary' collapseOnSelect>
         <Container fluid>
           <LinkContainer to="/">
-            <Navbar.Brand href="/" className='mx-auto'>
+            <Navbar.Brand href="/" >
               <img
+                
                 style={{ width: "50px", height: "50px", borderRadius: "50%" }}
                 src={logo}
                 alt="logo"
               />
-              < >One Click</>
+              <span>One Click</span>
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ml-auto">
+            <Nav className="">
               {user ? (
                 <NavDropdown
                   title={
