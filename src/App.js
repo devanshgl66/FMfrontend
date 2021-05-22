@@ -1,23 +1,17 @@
 import "./App.css";
 import HomePage from "./Screens/HomePage/HomePage";
 import Header from "./Components/Header";
-import Register from "./Components/Register";
+import Register from "./Components/Register/Register";
 import Login from "./Components/Login";
-
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Route } from "react-router-dom";
-import { AddAttendanceForm } from "./Components/MarkAttendance";
-import { SeeAttendanceForm } from "./Components/SeeAttendance";
-import DepttPage from "./Screens/DepttPage";
 import { useSelector } from "react-redux";
-import TeacherPage from "./Screens/TeacherPage";
 import VerifyEmail from "./Components/VerifyEmail";
-import StudentPage from "./Screens/StudentPage";
 import { useEffect, useState } from "react";
 import TeacherData from "./Screens/TeacherData";
 import DepttData from "./Screens/DepttData";
 import StudentData from "./Screens/StudentData";
-// import BarChart from './Components/linegraph/linegraph.component.js'
+// import Temp from "./Components/Temp";
 function App() {
   const [error, seterror] = useState(null);
   const [loading, setloading] = useState(false);
@@ -80,8 +74,8 @@ function App() {
   }
   return (
     <BrowserRouter>
-      <Header />
-      <main className="">
+      <Header style={{ backgroundColor: "#222" }} />
+      <main className="" style={{ backgroundColor: "#222" }}>
         <Container fluid>
           <Route
             path="/login"
@@ -103,26 +97,7 @@ function App() {
             path="/verifyAccount/:role"
             render={(props) => <VerifyEmail {...props} />}
           />
-          <Route
-            path="/markAttendance"
-            render={(props) => (
-              <AddAttendanceForm
-                location={props.location}
-                history={props.history}
-                user="Teacher"
-              />
-            )}
-          />
-          <Route
-            path="/seeAttendance"
-            render={(props) => (
-              <SeeAttendanceForm
-                location={props.location}
-                history={props.history}
-                user="Teacher"
-              />
-            )}
-          />
+          {/* <Route path="/temp" render={(props) => <Temp {...props} />} /> */}
           {user ? (
             <DispUserRoute state={user.role} />
           ) : (

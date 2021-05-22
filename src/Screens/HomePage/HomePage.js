@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import {RangeSelector} from "../../Components/RangeSelector";
 import photo from '../college.png'
-import devansh from '../Devansh.jpg'
-import jatin from '../Jatin.jpg'
+import devansh from '../devansh.jpg'
+import jatin from '../jatin.jpg'
 import './HomePage.styles.scss'
 import CreatorCardItem from '../../Components/Creator-card/Creator-card.component'
 
