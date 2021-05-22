@@ -2,7 +2,7 @@ import "./App.css";
 import HomePage from "./Screens/HomePage/HomePage";
 import Header from "./Components/Header";
 import Register from "./Components/Register";
-import Login from "./Components/Login";
+import Login from "./Components/Login/Login";
 
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Route } from "react-router-dom";
@@ -82,7 +82,6 @@ function App() {
     <BrowserRouter>
       <Header />
       <main className="">
-        <Container fluid>
           <Route
             path="/login"
             render={(props) => (
@@ -130,7 +129,6 @@ function App() {
               <DispUserRoute state="home" />
             </>
           )}
-        </Container>
       </main>
     </BrowserRouter>
   );
