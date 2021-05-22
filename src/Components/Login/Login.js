@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
-import { userLogin } from '../redux/actions/authAction'
+import { userLogin } from '../../redux/actions/authAction'
 import {Link} from 'react-router-dom'
-import Loader from './Loader' 
-import Message from './Message'
+import './Login.styles.scss'
+import Loader from '../Loader' 
+import Message from '../Message'
 const Login = ({location,history}) => {
     // const role=0
     const role=parseInt(location.pathname.split('/')[2])

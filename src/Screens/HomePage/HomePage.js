@@ -17,6 +17,32 @@ const HomePage = () => {
     'Allow teachers to see various insights about the attendance of students',
     'Support multiple department,multiple branches and multiple sections'
   ];
+  const colors = [
+    '#2196f3',
+    '#e91e63',
+    '#ffeb3b',
+    '#74ff1d'
+  ];
+  function createSquare(){
+      const section=document.querySelector('section')
+      const square1=document.createElement('span')
+      const square2=document.createElement('span')
+      const size=Math.random()*50;
+      const color=Math.floor(Math.random()*colors.length);
+
+      square1.style.background=colors[color];
+      square1.style.width=20 + size + 'px'
+      square1.style.height=20 + size + 'px'
+
+      // setting the position....the posiiton of span is set to absolute in the css file
+      square1.style.left = Math.random()*(window.innerWidth) + 'px';
+      section.appendChild(square1);
+      section.appendChild(square2)
+      setTimeout(()=>{
+          square1.remove();
+      },3000)
+    }
+
   const creater=[{name:'Devansh Goyal',image:devansh,phoneNo:'9416749221'},{name:'Jatin Kaushik',image:jatin,phoneNo:'8168791049'}];
   return(
 
@@ -50,6 +76,8 @@ const HomePage = () => {
                   )}
               </div>
           </div>
+          <section className='animation_container'></section>
+          {setInterval(createSquare,150)}
     </div>
   );
 };
