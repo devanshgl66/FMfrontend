@@ -11,6 +11,8 @@ import {
 import sidebarBg from "../bg1.jpg";
 import Loader from "../Components/Loader";
 import ModalMessage from '../Components/ModalMessage'
+import "../NavStyle.scss";
+import "./navbar.css";
 const MySubMenu = (props) => {
   return (
     <SubMenu title={props.name} icon={props.icon}>
@@ -57,6 +59,7 @@ const UserPage = (props) => {
           <ProSidebar
             image={sidebarBg}
             collapsedWidth="0px"
+            style={{height:'90vh'}}
             collapsed={isMobile ? showNav : false}
             className={isMobile ? "sidenav" : ""}
             id={isMobile ? "mySidenav" : ""}

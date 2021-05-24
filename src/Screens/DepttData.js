@@ -14,6 +14,8 @@ import AddSubject from "../Components/AddSubject";
 import ShowAllClass from "../Components/ShowAllClass";
 import { FcManager } from "react-icons/fc";
 import { MdSubject } from "react-icons/md";
+import "../NavStyle.scss";
+import "./navbar.css";
 const DepttData = (props) => {
   const dispatch = useDispatch();
   const [comp, setcomp] = useState("dashboard");

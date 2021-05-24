@@ -18,7 +18,14 @@ const StudentProfile=(props)=>{
     const {user}=useSelector(state=>state.auth)
     // console.log(user)
     // console.log('hlo')
-    const [profilePic, setprofilePic] = useState(user?user.profilePic:null)
+    const [profilePic, setprofilePic] = useState(
+      user
+        ? `data:${user.profilePic.contentType};base64,${new Buffer(
+            user.profilePic.data.data,
+            "base64"
+          ).toString("base64")}`
+        : null
+    );
     const [preview, setpreview] = useState(null)
     const [errorMessage, seterrorMessage] = useState("");
     if(!user)

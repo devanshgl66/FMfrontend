@@ -21,6 +21,9 @@ const Header = () => {
     dispatch(userLogout({ role: user.role }));
     setloading(true);
   };
+  // console.log(user.profilePic.data.data.length)
+  // console.log(new Buffer(user.profilePic.data.data,'base64').toString('base64').length)
+  // console.log(`data:${user.profilePic.contentType};base64,${new Buffer(user.profilePic.data.data,'base64').toString('base64')}`)
   return (
     <header >
       {/* {loading===true&&<Message variant='success'>You are logout</Message>} */}
@@ -48,9 +51,10 @@ const Header = () => {
                       {user.profilePic ? (
                         <img
                           className="thumbnail-image"
-                          src={user.profilePic}
+                          // src={user.profilePic}
+                          src={user.profilePic?`data:${user.profilePic.contentType};base64,${new Buffer(user.profilePic.data.data,'base64').toString('base64')}`:null}
                           alt="user pic"
-                          style={{ height: "75px", width: "75px" }}
+                          style={{ height: "50px", width: "50px" }}
                         />
                       ) : (
                         <i className="fa fa-user" />

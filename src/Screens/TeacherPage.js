@@ -18,7 +18,7 @@ import { AddAttendanceForm } from "../Components/MarkAttendance";
 import { useDispatch } from "react-redux";
 import { dropDown } from "../redux/actions/classAction";
 import { markAttendance } from "../redux/actions/attendance";
-import SideNav from "./navbar.css";
+import "./navbar.css";
 import SeeClass from "../Components/SeeClass";
 import { SeeAttendanceForm } from "../Components/SeeAttendance";
 import Dashboard from "../Components/Dashboard";

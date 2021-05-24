@@ -15,7 +15,10 @@ import { updateUser } from "../../redux/actions/authAction";
 const DeptProfile = (props) => {
   const dispatch = useDispatch();
   var { user } = useSelector((state) => state.auth);
-  const [newuser, setnewuser] = useState({ ...user });
+  const [newuser, setnewuser] = useState({ ...user,profilePic:user.profilePic?`data:${user.profilePic.contentType};base64,${new Buffer(
+    user.profilePic.data.data,
+    "base64"
+  ).toString("base64")}`:null });
   const [preview, setpreview] = useState(null);
   const [errorMessage, seterrorMessage] = useState()
   if (!user) return <h1>Login first.</h1>;
