@@ -18,6 +18,7 @@ function App() {
   const [success, setsuccess] = useState(null);
   const [heading, setheading] = useState("");
   const [width, setWidth] = useState(window.innerWidth <= 768);
+  const [showNav, setshowNav] = useState(false);
   function handleWindowSizeChange() {
     setWidth(window.innerWidth <= 768);
   }
@@ -74,7 +75,7 @@ function App() {
   }
   return (
     <BrowserRouter>
-      <Header style={{ backgroundColor: "#222" }} />
+      <Header style={{ backgroundColor: "#222" }} isMobile={newprop.isMobile} showNav={showNav} setshowNav={setshowNav}/>
       <main className="" style={{ backgroundColor: "#222" }}>
         <Container fluid>
           <Route

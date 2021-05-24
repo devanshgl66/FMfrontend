@@ -45,7 +45,7 @@ const UserPage = (props) => {
   // console.log(loading)
   return (
     <>
-      {props.isMobile ? (
+      {/* {props.isMobile ? (
         <Row>
           <Col>
             <Button onClick={() => setshowNav(!showNav)}>&#9776;</Button>
@@ -53,7 +53,7 @@ const UserPage = (props) => {
         </Row>
       ) : (
         <></>
-      )}
+      )} */}
       <Row>
         <Col md="auto">
           <ProSidebar
