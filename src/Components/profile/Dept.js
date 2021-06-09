@@ -31,7 +31,7 @@ const DeptProfile = (props) => {
     setpreview(preview);
   }
   async function updateProfile() {
-    if(newuser.branch.length==0){
+    if(newuser.branch.length===0){
       seterrorMessage('Atleast one branch required')
       return;
     }
@@ -43,15 +43,11 @@ const DeptProfile = (props) => {
     
     props.setloading(false);
     if (err == null){
-      // console.log('hlo')
       props.setsuccess('Profile Updated Successfully');
-      // console.log(success)
     }
     else props.seterror(err);
-    // setsuccess('gl')
     return false;
   }
-  // console.log(success)
   return (
     <>
       <Form

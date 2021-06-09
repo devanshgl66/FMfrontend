@@ -40,12 +40,10 @@ function VerifyEmail(props) {
         !data.loggedIn
       )
     );
-    setTimeout(() => {
-      setloading(false);
-      console.log(res);
-      if (res.success == true) setsuccess(true);
-      else seterror(res.err);
-    }, 5000);
+    setloading(false);
+    console.log(res);
+    if (res.success == true) setsuccess(true);
+    else seterror(res.err);
   }
 
   return (
