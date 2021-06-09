@@ -19,7 +19,7 @@ const StudentProfile=(props)=>{
     // console.log(user)
     // console.log('hlo')
     const [profilePic, setprofilePic] = useState(
-      user
+      user&&user.profilePic
         ? `data:${user.profilePic.contentType};base64,${new Buffer(
             user.profilePic.data.data,
             "base64"

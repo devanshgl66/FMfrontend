@@ -3,22 +3,22 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Button, Form } from "react-bootstrap";
-import { LocalForm, Control } from "react-redux-form";
 import { Label } from "reactstrap";
-import Message from "../Message";
 import Avatar from "react-avatar-edit";
-import Loader from "../Loader";
-import ModalMessage from "../ModalMessage";
 import {RiDeleteBin6Line} from 'react-icons/ri'
 import {CgAdd} from 'react-icons/cg'
 import { updateUser } from "../../redux/actions/authAction";
 const DeptProfile = (props) => {
   const dispatch = useDispatch();
   var { user } = useSelector((state) => state.auth);
-  const [newuser, setnewuser] = useState({ ...user,profilePic:user.profilePic?`data:${user.profilePic.contentType};base64,${new Buffer(
-    user.profilePic.data.data,
-    "base64"
-  ).toString("base64")}`:null });
+  const [newuser, setnewuser] = useState({ ...user,profilePic:
+    user&&user.profilePic
+      ? `data:${user.profilePic.contentType};base64,${new Buffer(
+          user.profilePic.data.data,
+          "base64"
+        ).toString("base64")}`
+      : null
+      });
   const [preview, setpreview] = useState(null);
   const [errorMessage, seterrorMessage] = useState()
   if (!user) return <h1>Login first.</h1>;

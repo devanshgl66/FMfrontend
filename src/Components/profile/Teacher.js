@@ -16,10 +16,10 @@ const TeacherProfile = (props) => {
   const [loading, setloading] = useState(false);
   const [success, setsuccess] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  // console.log(user)
+  console.log(user)
   // console.log('hlo')
   const [profilePic, setprofilePic] = useState(
-    user
+    user&&user.profilePic
       ? `data:${user.profilePic.contentType};base64,${new Buffer(
           user.profilePic.data.data,
           "base64"
