@@ -20,7 +20,7 @@ function App(props) {
   const [success, setsuccess] = useState(null);
   const [heading, setheading] = useState("");
   const [width, setWidth] = useState(window.innerWidth <= 768);
-  const [showNav, setshowNav] = useState(false);
+  const [showNav, setshowNav] = useState("false");
   // var showNav=false
   // const setshowNav=(b)=>showNav=b;
   function handleWindowSizeChange() {
@@ -79,9 +79,6 @@ function App(props) {
       </Route>
     ),
   };
-  function DispUserRoute({ state }) {
-    return <>{userRoute[state]}</>;
-  }
   return (
     <BrowserRouter>
       <Header
@@ -112,25 +109,10 @@ function App(props) {
             path="/verifyAccount/:role"
             render={(props) => <VerifyEmail {...props} />}
           />
-          {/* <Route path="/temp" render={(props) => <Temp {...props} />} /> */}
-          {user ? (
-            <DispUserRoute state={user.role} />
-          ) : (
-            <>
-              <DispUserRoute state="home" />
-            </>
-          )}
+          {userRoute[user?user.role:'home']}
         </Container>
-        {/* <DepttData {...props} {...newprop} /> */}
       </main>
     </BrowserRouter>
   );
 }
-
-// export default memo(App,(prevProps,nextProps)=>{
-//   console.log(prevProps)
-//   console.log(nextProps)
-//   console.log('hlo')
-//   return prevProps.showNav===nextProps.showNav
-// });;
 export default App;

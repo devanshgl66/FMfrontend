@@ -12,29 +12,31 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../redux/actions/authAction";
 import Loader from "./Loader";
-import Message from "./Message";
 import logo from "./logo.jpeg";
+import { Link } from "react-router-dom";
 const Header = (props) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  // const user={}
-  const [loading, setloading] = useState(undefined);
   const logoutHandler = () => {
-    setloading(false);
     dispatch(userLogout({ role: user.role }));
-    setloading(true);
   };
-  // console.log(props.showNav)
-  // console.log(user.profilePic.data.data.length)
-  // console.log(new Buffer(user.profilePic.data.data,'base64').toString('base64').length)
-  // console.log(`data:${user.profilePic.contentType};base64,${new Buffer(user.profilePic.data.data,'base64').toString('base64')}`)
   return (
     <header>
-      {/* {loading===true&&<Message variant='success'>You are logout</Message>} */}
-      {loading === false && <Loader />}
-      <Navbar  variant="dark" bg="primary" collapseOnSelect>
+      <Navbar variant="dark" bg="primary" collapseOnSelect>
         <Container fluid>
-          <LinkContainer className="" to="/">
+        {props.isMobile &&user ? (
+                    <Row>
+                      <Col>
+                        <Button
+                          onClick={() => props.setshowNav(!props.showNav)}
+                        >
+                          &#9776;
+                        </Button>
+                      </Col>
+                    </Row>
+                  ) : (
+                    <></>
+                  )}
             <Navbar.Brand className="" href="/">
               <img
                 style={{ width: "50px", height: "50px", borderRadius: "50%" }}
@@ -43,13 +45,8 @@ const Header = (props) => {
               />
               <>One Click</>
             </Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse
-            style={{ justifyContent: "end", fontSize: "larger" }}
-            id="basic-navbar-nav"
-          >
-            <Nav className="">
+          
+            <Nav className="ml-auto">
               {user ? (
                 <>
                   <NavDropdown
@@ -83,53 +80,19 @@ const Header = (props) => {
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
-                  {props.isMobile ? (
-                    <Row>
-                      <Col>
-                        <Button
-                          onClick={() => props.setshowNav(!props.showNav)}
-                        >
-                          &#9776;
-                        </Button>
-                      </Col>
-                    </Row>
-                  ) : (
-                    <></>
-                  )}
+                  
                 </>
               ) : (
-                <>
-                  <NavDropdown title="Sign in" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="/login/0">Student</NavDropdown.Item>
-                    <NavDropdown.Item href="/login/1">teacher</NavDropdown.Item>
-                    <NavDropdown.Item href="/login/2">
-                      Department
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                  <NavDropdown title="Register" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="/register/0">
-                      Student
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/register/1">
-                      Teacher
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/register/2">
-                      Department
-                    </NavDropdown.Item>
-                  </NavDropdown>
+                <> 
+                <Nav.Link ><Link to='/login'>Login</Link></Nav.Link>
+                <Nav.Link><Link to='/register'>Register</Link></Nav.Link>
                 </>
               )}
             </Nav>
-          </Navbar.Collapse>
         </Container>
       </Navbar>
     </header>
   );
 };
 
-// export default memo(Header,(prevProps,nextProps)=>{
-//   // console.log(prevProps)
-//   // console.log(nextProps)
-//   return false
-// })
-export default Header
+export default Header;

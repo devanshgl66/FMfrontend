@@ -36,10 +36,48 @@ function Child3(props) {
     </>
   );
 }
-function Parent() {
+class Parent extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            vara:'default'
+        }
+    }
+    componentDidMount(){
+        console.log('mount')
+    }
+    componentDidUpdate(){
+        console.log('update');
+    }
+    render(){
+        return (
+            <>
+              {this.props.showNav}
+              <button
+                onClick={() => {
+                  this.props.setshowNav(2);
+                }}
+              >
+                Parent
+              </button>
+              <Child1 vara={this.state.vara} setvara={(val)=>this.setState({vara:val})} />
+              <Child2 vara={this.state.vara} setvara={(val)=>this.setState({vara:val})} />
+            </>
+          );
+    }
+}
+function Parent2(props) {
   const [vara, setvara] = useState("Default");
   return (
     <>
+      {props.showNav}
+      <button
+        onClick={() => {
+          props.setshowNav(2);
+        }}
+      >
+        Parent
+      </button>
       <Child1 vara={vara} setvara={setvara} />
       <Child2 vara={vara} setvara={setvara} />
     </>
