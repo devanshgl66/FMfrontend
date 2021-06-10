@@ -8,11 +8,14 @@ import {
   SidebarHeader,
   SubMenu,
 } from "react-pro-sidebar";
+import { useDispatch } from "react-redux";
 import sidebarBg from "../bg1.jpg";
 import Loader from "../Components/Loader";
 import ModalMessage from '../Components/ModalMessage'
 import "../NavStyle.scss";
+import { userLogout } from "../redux/actions/authAction";
 import "./navbar.css";
+import {AiOutlineLogout} from 'react-icons/ai'
 const MySubMenu = (props) => {
   return (
     <SubMenu title={props.name} icon={props.icon}>
@@ -38,11 +41,10 @@ const MySubMenu = (props) => {
 };
 const UserPage = (props) => {
   const { isMobile, userHandle, setcomp,loading,error,success,setloading,setsuccess,seterror } = props;
-  // const [showNav, setshowNav] = useState(false);
   function DispComponent({ state }) {
     return <>{props.compEnum[state]}</>;
   }
-  // console.log(props.showNav)
+  const dispatch = useDispatch()
   return (
     <>
       <Row>
@@ -99,13 +101,18 @@ const UserPage = (props) => {
                     </MenuItem>
                   ) : (
                     <MySubMenu
-                    // onClick={item.onClick}
                       setcomp={setcomp}
-                      // icon={item.icon}
                       {...item}
                     />
                   );
                 })}
+              </Menu>
+              <Menu iconShape='circle'>
+                <MenuItem
+                  icon={<AiOutlineLogout />}
+                  onClick={()=>
+                    dispatch(userLogout({ role: props.role }))}
+                  >Logout</MenuItem>
               </Menu>
             </SidebarContent>
           </ProSidebar>

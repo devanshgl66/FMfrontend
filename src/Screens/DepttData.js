@@ -71,6 +71,7 @@ class DepttData extends React.Component {
     return (
       <>
         <UserPage
+        role={2}
           compEnum={this.compEnum}
           comp={this.state.comp}
           setcomp={(val) => {

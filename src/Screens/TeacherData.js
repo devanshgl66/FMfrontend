@@ -35,6 +35,7 @@ const TeacherData = (props) => {
   return (
     <>
       <UserPage
+      role={1}
         compEnum={compEnum}
         comp={comp}
         isMobile={props.isMobile}
