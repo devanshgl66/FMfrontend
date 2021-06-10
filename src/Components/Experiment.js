@@ -1,20 +1,49 @@
-import React, { useState } from 'react'
-const Temp=()=>{
-    const [var1, setvar1] = useState(0)
-    return{
-        value:var1,
-        code:<><button onClick={()=>setvar1(var1+1)}>Click me!</button></>
-    }
+import React, { useState } from "react";
+function Child1(props) {
+  return (
+    <>
+      {props.vara}
+      <button
+        onClick={() => {
+          props.setvara("child1");
+        }}
+      >
+        Child1
+      </button>
+    </>
+  );
 }
-const Experiment = () => {
-    console.log(Temp())
+function Child2(props) {
+  const [var2, setvar2] = useState('default2')
     return (
-        <div>
-            <h1>Hello</h1>
-            <h1>{Temp().value}</h1>
-            {Temp().code}
-        </div>
-    )
+    <>
+    {var2}
+    <button onClick={()=>setvar2('changed')}>child2</button>
+      <Child3 vara={props.vara} setvara={props.setvara}/>
+    </>
+  );
+}
+function Child3(props) {
+  return (
+    <>
+      <button
+        onClick={() => {
+          props.setvara(props.vara+"child3");
+        }}
+      >
+        Child3
+      </button>
+    </>
+  );
+}
+function Parent() {
+  const [vara, setvara] = useState("Default");
+  return (
+    <>
+      <Child1 vara={vara} setvara={setvara} />
+      <Child2 vara={vara} setvara={setvara} />
+    </>
+  );
 }
 
-export default Experiment
+export default Parent;

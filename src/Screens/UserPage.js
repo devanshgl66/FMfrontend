@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import {
   Menu,
@@ -38,29 +38,20 @@ const MySubMenu = (props) => {
 };
 const UserPage = (props) => {
   const { isMobile, userHandle, setcomp,loading,error,success,setloading,setsuccess,seterror } = props;
-  const [showNav, setshowNav] = useState(false);
+  // const [showNav, setshowNav] = useState(false);
   function DispComponent({ state }) {
     return <>{props.compEnum[state]}</>;
   }
-  // console.log(loading)
+  // console.log(props.showNav)
   return (
     <>
-      {/* {props.isMobile ? (
-        <Row>
-          <Col>
-            <Button onClick={() => setshowNav(!showNav)}>&#9776;</Button>
-          </Col>
-        </Row>
-      ) : (
-        <></>
-      )} */}
       <Row>
         <Col md="auto">
           <ProSidebar
             image={sidebarBg}
             collapsedWidth="0px"
             style={{height:'90vh'}}
-            collapsed={isMobile ? showNav : false}
+            collapsed={isMobile ? props.showNav : false}
             className={isMobile ? "sidenav" : ""}
             id={isMobile ? "mySidenav" : ""}
           >
@@ -68,7 +59,7 @@ const UserPage = (props) => {
               <span
                 class="closebtn"
                 style={{ cursor: "pointer" }}
-                onClick={() => setshowNav(!showNav)}
+                onClick={() => props.setshowNav(!props.showNav)}
               >
                 &times;
               </span>
@@ -157,4 +148,9 @@ const UserPage = (props) => {
   );
 };
 
-export default UserPage;
+// export default memo(UserPage,(prevProps,nextProps)=>{
+//   // console.log(prevProps)
+//   // console.log(nextProps)
+//   return prevProps.showNav!==nextProps.showNav
+// });;
+export default UserPage

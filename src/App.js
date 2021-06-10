@@ -7,21 +7,26 @@ import { Container } from "react-bootstrap";
 import { BrowserRouter, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import VerifyEmail from "./Components/VerifyEmail";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import TeacherData from "./Screens/TeacherData";
 import DepttData from "./Screens/DepttData";
 import StudentData from "./Screens/StudentData";
+import { Component } from "react";
+import Parent from "./Components/Experiment";
 // import Temp from "./Components/Temp";
-function App() {
+function App(props) {
   const [error, seterror] = useState(null);
   const [loading, setloading] = useState(false);
   const [success, setsuccess] = useState(null);
   const [heading, setheading] = useState("");
   const [width, setWidth] = useState(window.innerWidth <= 768);
   const [showNav, setshowNav] = useState(false);
+  // var showNav=false
+  // const setshowNav=(b)=>showNav=b;
   function handleWindowSizeChange() {
     setWidth(window.innerWidth <= 768);
   }
+  console.log(showNav);
   useEffect(() => {
     window.addEventListener("resize", handleWindowSizeChange);
     return () => {
@@ -39,6 +44,8 @@ function App() {
     seterror,
     heading,
     setheading,
+    showNav,
+    setshowNav,
   };
   const userRoute = {
     home: (
@@ -65,9 +72,11 @@ function App() {
     2: (
       <Route
         path="/"
-        render={(props) => <DepttData {...props} {...newprop} />}
+        // children={(props) => <DepttData {...props} {...newprop} />}
         exact
-      />
+      >
+        <DepttData {...props} {...newprop} />
+      </Route>
     ),
   };
   function DispUserRoute({ state }) {
@@ -75,7 +84,12 @@ function App() {
   }
   return (
     <BrowserRouter>
-      <Header style={{ backgroundColor: "#222" }} isMobile={newprop.isMobile} showNav={showNav} setshowNav={setshowNav}/>
+      <Header
+        style={{ backgroundColor: "#222" }}
+        isMobile={newprop.isMobile}
+        showNav={showNav}
+        setshowNav={setshowNav}
+      />
       <main className="" style={{ backgroundColor: "#222" }}>
         <Container fluid>
           <Route
@@ -107,9 +121,16 @@ function App() {
             </>
           )}
         </Container>
+        {/* <DepttData {...props} {...newprop} /> */}
       </main>
     </BrowserRouter>
   );
 }
 
+// export default memo(App,(prevProps,nextProps)=>{
+//   console.log(prevProps)
+//   console.log(nextProps)
+//   console.log('hlo')
+//   return prevProps.showNav===nextProps.showNav
+// });;
 export default App;

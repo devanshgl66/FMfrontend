@@ -125,7 +125,8 @@ const RegisterDepartment = (props) => {
                       <CgAdd />
                     </Button>
                     {branch.map((branchCode, idx) => (
-                      <>
+                      <Row className='py-2'>
+                      <Col>
                         <Form.Control
                           type="number"
                           value={branchCode}
@@ -136,7 +137,8 @@ const RegisterDepartment = (props) => {
                             setbranch(br);
                           }}
                           required
-                        />
+                        /></Col>
+                        <Col>
                         <Button
                           onClick={() => {
                             var br = [...branch];
@@ -145,10 +147,12 @@ const RegisterDepartment = (props) => {
                           }}
                         >
                           <RiDeleteBin6Line />
-                        </Button>
-                      </>
+                        </Button></Col>
+                        <br/>
+                      </Row>
                     ))}
                   </Col>
+
                 </Row>
               </>
               <Row>

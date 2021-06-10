@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import {
   Navbar,
@@ -24,6 +24,7 @@ const Header = (props) => {
     dispatch(userLogout({ role: user.role }));
     setloading(true);
   };
+  // console.log(props.showNav)
   // console.log(user.profilePic.data.data.length)
   // console.log(new Buffer(user.profilePic.data.data,'base64').toString('base64').length)
   // console.log(`data:${user.profilePic.contentType};base64,${new Buffer(user.profilePic.data.data,'base64').toString('base64')}`)
@@ -54,23 +55,23 @@ const Header = (props) => {
                   <NavDropdown
                     title={
                       <span className="pull-left">
-                        {user.profilePic ? (<></>
-                          // <img
-                          //   className="thumbnail-image"
-                          //   // src={user.profilePic}
-                          //   src={
-                          //     user.profilePic
-                          //       ? `data:${
-                          //           user.profilePic.contentType
-                          //         };base64,${new Buffer(
-                          //           user.profilePic.data.data,
-                          //           "base64"
-                          //         ).toString("base64")}`
-                          //       : null
-                          //   }
-                          //   alt="user pic"
-                          //   style={{ height: "50px", width: "50px" }}
-                          // />
+                        {user.profilePic ? (
+                          <img
+                            className="thumbnail-image"
+                            // src={user.profilePic}
+                            src={
+                              user.profilePic
+                                ? `data:${
+                                    user.profilePic.contentType
+                                  };base64,${new Buffer(
+                                    user.profilePic.data.data,
+                                    "base64"
+                                  ).toString("base64")}`
+                                : null
+                            }
+                            alt="user pic"
+                            style={{ height: "50px", width: "50px" }}
+                          />
                         ) : (
                           <i className="fa fa-user" />
                         )}
@@ -126,4 +127,9 @@ const Header = (props) => {
   );
 };
 
-export default Header;
+// export default memo(Header,(prevProps,nextProps)=>{
+//   // console.log(prevProps)
+//   // console.log(nextProps)
+//   return false
+// })
+export default Header

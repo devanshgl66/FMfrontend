@@ -55,7 +55,7 @@ export const addClass = (class1) => async (dispatch) => {
   export const dropDown=(param)=>async (dispatch)=>{
     try {
       const {data}=await axios.get('/class/get_data',{params:param})
-      console.log(data)
+      // console.log(data)
       return {success:true,class:data}
     } catch (error) {
       // console.log(errorStr)
