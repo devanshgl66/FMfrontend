@@ -29,7 +29,7 @@ const Login = ({ location, history }) => {
           {loading && <Loader />}
           <h1>User Login</h1>
           <Form onSubmit={loginHandler}>
-            <Form.Group controlId="exampleForm.ControlSelect1">
+            <Form.Group controlId="user">
               <Form.Label>User</Form.Label>
               <Form.Control as="select" onChange={e=>setrole(e.target.value)}>
                 <option value={0}>Student</option>

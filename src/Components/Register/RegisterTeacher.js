@@ -30,9 +30,6 @@ const RegisterTeacher = (props) => {
     return (
       <>
         <>
-          <Row className="justify-content-md-center">
-            <Col md={6} xs={12}>
-              <h1>Teacher Register</h1>
               <LocalForm
                 onSubmit={(values, e) => {
                   e.preventDefault();
@@ -44,7 +41,7 @@ const RegisterTeacher = (props) => {
                     <Col>
                       <Label htmlFor="image">Profile Pic:</Label>
                       <Avatar
-                        width={390}
+                        width='100%'
                         height={295}
                         onCrop={onCrop}
                         onClose={onClose}
@@ -125,8 +122,6 @@ const RegisterTeacher = (props) => {
                   </Col>
                 </Row>
               </LocalForm>
-            </Col>
-          </Row>
         </>
       </>
     );

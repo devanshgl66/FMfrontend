@@ -36,9 +36,7 @@ const RegisterDepartment = (props) => {
   }
   return (
     <>
-        <Row className="justify-content-md-center">
-          <Col md={6} xs={12}>
-            <h1>Department Register</h1>
+        
             <LocalForm
               onSubmit={(values, e) => {
                 e.preventDefault();
@@ -50,8 +48,8 @@ const RegisterDepartment = (props) => {
                   <Col>
                     <Label htmlFor="image">Profile Pic:</Label>
                     <Avatar
-                      width={390}
-                      height={295}
+                    width='100%'
+                    height={295}
                       onCrop={onCrop}
                       onClose={onClose}
                     />
@@ -172,8 +170,6 @@ const RegisterDepartment = (props) => {
                 </Col>
               </Row>
             </LocalForm>
-          </Col>
-        </Row>
     </>
   );
 };

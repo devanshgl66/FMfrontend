@@ -44,9 +44,6 @@ function RegisterStudent(props) {
     }
     return (
       <>
-          <Row className="justify-content-md-center">
-            <Col md={4} xs={12}>
-              <h1>Student Register</h1>
               <LocalForm
                 onSubmit={(values, e) => StudentRegisterHandler(values, e)}
               >
@@ -192,8 +189,6 @@ function RegisterStudent(props) {
                   </Col>
                 </Row>
               </LocalForm>
-            </Col>
-          </Row>
         
       </>
     );

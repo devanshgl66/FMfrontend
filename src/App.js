@@ -87,31 +87,27 @@ function App(props) {
         showNav={showNav}
         setshowNav={setshowNav}
       />
+      <Container fluid>
       <main className="" style={{ backgroundColor: "#222" }}>
-        <Container fluid>
-          <Route
-            path="/login"
-            render={(props) => (
-              <Login
-                location={props.location}
-                history={props.history}
-                role={1}
-              />
-            )}
-          />
-          <Route
-            path="/register"
-            render={(props) => (
-              <Register location={props.location} history={props.history} />
-            )}
-          />
-          <Route
-            path="/verifyAccount/:role"
-            render={(props) => <VerifyEmail {...props} />}
-          />
-          {userRoute[user?user.role:'home']}
-        </Container>
+        <Route
+          path="/login"
+          render={(props) => (
+            <Login {...props} />
+          )}
+        />
+        <Route
+          path="/register"
+          render={(props) => (
+            <Register {...props} />
+          )}
+        />
+        <Route
+          path="/verifyAccount/:role"
+          render={(props) => <VerifyEmail {...props} />}
+        />
+        {userRoute[user ? user.role : "home"]}
       </main>
+      </Container>
     </BrowserRouter>
   );
 }
