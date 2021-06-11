@@ -9,17 +9,11 @@ import {
   Col,
   Button,
 } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { userLogout } from "../redux/actions/authAction";
-import Loader from "./Loader";
+import {  useSelector } from "react-redux";
 import logo from "./logo.jpeg";
 import { Link } from "react-router-dom";
 const Header = (props) => {
-  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const logoutHandler = () => {
-    dispatch(userLogout({ role: user.role }));
-  };
   return (
     <header>
       <Navbar variant="dark" bg="primary" collapseOnSelect>
@@ -76,9 +70,7 @@ const Header = (props) => {
                       </span>
                     }
                   >
-                    <NavDropdown.Item onClick={logoutHandler}>
-                      Logout
-                    </NavDropdown.Item>
+                    
                   </NavDropdown>
                   
                 </>

@@ -49,7 +49,7 @@ class MyWebcam extends Component {
     // setstyleImg()
   }
   ShowImages() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <>
         {this.state.imgSrc.map((image, i) => {
@@ -76,7 +76,6 @@ class MyWebcam extends Component {
           audio={false}
           ref={this.webcamRef}
           screenshotFormat="image/jpeg"
-
         />
         <br />
         <Button onClick={this.capture}>Capture photo</Button>

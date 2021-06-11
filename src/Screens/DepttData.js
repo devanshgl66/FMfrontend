@@ -1,5 +1,5 @@
-import React, {useEffect, useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { connect} from "react-redux";
 import Dashboard from "../Components/Dashboard";
 import { dropDown, viewClass } from "../redux/actions/classAction";
 import UserPage from "./UserPage";
