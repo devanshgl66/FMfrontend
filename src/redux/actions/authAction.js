@@ -8,7 +8,7 @@ import {
 } from "../ActionType";
 import cookie from "react-cookies";
 import { BaseUrl } from "../../Base";
-axios.defaults.baseURL = BaseUrl;
+// axios.defaults.baseURL = BaseUrl;
 axios.defaults.withCredentials = true;
 // function to convert base64 image to image
 function b64toBlob(b64image) {

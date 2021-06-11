@@ -2,6 +2,7 @@
   "name": "fr-frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy":"https://192.168.1.8:8000",
   "dependencies": {
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Dashboard from "../Components/Dashboard";
-import { AddAttendanceForm } from "../Components/MarkAttendance";
-import TeacherProfile from "../Components/profile/Teacher";
 import SeeClass from "../Components/SeeClass";
 import { dropDown } from "../redux/actions/classAction";
 import UserPage from "./UserPage";
@@ -40,6 +38,8 @@ const StudentData = (props) => {
         comp={comp}
         isMobile={props.isMobile}
         setcomp={setcomp}
+        showNav={props.showNav}
+        setshowNav={props.setshowNav}
         userHandle="Student Handle"
         item={[
           {

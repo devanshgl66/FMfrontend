@@ -40,6 +40,8 @@ const TeacherData = (props) => {
         comp={comp}
         isMobile={props.isMobile}
         setcomp={setcomp}
+        showNav={props.showNav}
+        setshowNav={props.setshowNav}
         userHandle="Teacher Handle"
         item={[
           {

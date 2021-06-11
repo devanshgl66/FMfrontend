@@ -43,8 +43,8 @@ const Header = (props) => {
             <Nav className="ml-auto">
               {user ? (
                 <>
-                  <NavDropdown
-                    title={
+                  <Nav.Link> 
+                    
                       <span className="pull-left">
                         {user.profilePic ? (
                           <img
@@ -68,10 +68,10 @@ const Header = (props) => {
                         )}
                         {" " + user.name}
                       </span>
-                    }
-                  >
                     
-                  </NavDropdown>
+                  
+                    
+                  </Nav.Link>
                   
                 </>
               ) : (

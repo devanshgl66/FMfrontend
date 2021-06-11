@@ -56,25 +56,17 @@ function App(props) {
       />
     ),
     0: (
-      <Route
-        path="/"
-        render={(props) => <StudentData {...props} {...newprop} />}
-        exact
-      />
+      <Route path="/" exact>
+        <StudentData {...props} {...newprop} />
+      </Route>
     ),
     1: (
-      <Route
-        path="/"
-        render={(props) => <TeacherData {...props} {...newprop} />}
-        exact
-      />
+      <Route path="/" exact>
+        <TeacherData {...props} {...newprop} />
+      </Route>
     ),
     2: (
-      <Route
-        path="/"
-        // children={(props) => <DepttData {...props} {...newprop} />}
-        exact
-      >
+      <Route path="/" exact>
         <DepttData {...props} {...newprop} />
       </Route>
     ),
@@ -88,25 +80,15 @@ function App(props) {
         setshowNav={setshowNav}
       />
       <Container fluid>
-      <main className="" style={{ backgroundColor: "#222" }}>
-        <Route
-          path="/login"
-          render={(props) => (
-            <Login {...props} />
-          )}
-        />
-        <Route
-          path="/register"
-          render={(props) => (
-            <Register {...props} />
-          )}
-        />
-        <Route
-          path="/verifyAccount/:role"
-          render={(props) => <VerifyEmail {...props} />}
-        />
-        {userRoute[user ? user.role : "home"]}
-      </main>
+        <main className="" style={{ backgroundColor: "#222" }}>
+          <Route path="/login" render={(props) => <Login {...props} />} />
+          <Route path="/register" render={(props) => <Register {...props} />} />
+          <Route
+            path="/verifyAccount/:role"
+            render={(props) => <VerifyEmail {...props} />}
+          />
+          {userRoute[user ? user.role : "home"]}
+        </main>
       </Container>
     </BrowserRouter>
   );

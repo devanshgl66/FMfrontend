@@ -58,7 +58,6 @@ export const addClass = (class1) => async (dispatch) => {
       // console.log(data)
       return {success:true,class:data}
     } catch (error) {
-      // console.log(errorStr)
       const errorStr=error.response && error.response.data.message
           ? error.response.data.message
           : error.message
