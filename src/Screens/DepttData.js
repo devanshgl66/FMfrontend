@@ -20,16 +20,6 @@ class DepttData extends React.Component {
       classes: [],
       particularClass: null,
     };
-    const {
-      error,
-      seterror,
-      loading,
-      setloading,
-      success,
-      setsuccess,
-      setheading,
-      heading,
-    } = this.props;
     this.renderEditClass = this.renderEditClass.bind(this);
     this.compEnum = {
       dashboard: <Dashboard />,
@@ -38,9 +28,9 @@ class DepttData extends React.Component {
       profile: (
         <DeptProfile
           {...this.props}
-          setsuccess={this.setsuccess}
-          setloading={this.setloading}
-          seterror={this.seterror}
+          setsuccess={this.props.setsuccess}
+          setloading={this.props.setloading}
+          seterror={this.props.seterror}
         />
       ),
       addSubject: <AddSubject />,
@@ -81,14 +71,14 @@ class DepttData extends React.Component {
           showNav={this.props.showNav}
           setshowNav={this.props.setshowNav}
           userHandle="Department's Handle"
-          loading={this.state.loading}
-          success={this.success}
-          error={this.error}
-          setsuccess={this.setsuccess}
-          setloading={this.setloading}
-          seterror={this.seterror}
-          heading={this.heading}
-          setheading={this.setheading}
+          loading={this.props.loading}
+          success={this.props.success}
+          error={this.props.error}
+          setsuccess={this.props.setsuccess}
+          setloading={this.props.setloading}
+          seterror={this.props.seterror}
+          heading={this.props.heading}
+          setheading={this.props.setheading}
           item={[
             {
               type: "menu",

@@ -59,7 +59,7 @@ const TeacherProfile = (props) => {
           <Col>
             <Label htmlFor="image">Profile Pic:</Label>
             <Avatar
-              width={390}
+              width={"100%"}
               height={295}
               onCrop={onCrop}
               onClose={onClose}
