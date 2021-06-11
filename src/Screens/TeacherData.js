@@ -12,7 +12,6 @@ import {FcManager} from 'react-icons/fc'
 const TeacherData = (props) => {
   const dispatch = useDispatch();
   const [comp, setcomp] = useState("dashboard");
-  const [particularClass, setparticularClass] = useState(null);
   const [teacherClass, setteacherClass] = useState();
   const [Class, setClass] = useState({});
   useEffect(() => {

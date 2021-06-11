@@ -190,8 +190,9 @@ const AddSection = ({
     </>
   );
 };
-const AddClass = ({Class}) => {
-  console.log(Class)
+const AddClass = (props) => {
+  console.log(props)
+  const {Class}=props
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth); //for getting branch Code
   const [section, setsection] = useState([{

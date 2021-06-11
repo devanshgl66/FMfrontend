@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect} from "react-redux";
 import Dashboard from "../Components/Dashboard";
 import { dropDown, viewClass } from "../redux/actions/classAction";
@@ -12,149 +12,142 @@ import { FcManager } from "react-icons/fc";
 import { MdSubject } from "react-icons/md";
 import "../NavStyle.scss";
 import "./navbar.css";
-class DepttData extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      comp: "dashboard",
-      classes: [],
-      particularClass: null,
-    };
-    this.renderEditClass = this.renderEditClass.bind(this);
-    this.compEnum = {
-      dashboard: <Dashboard />,
-      addClass: <AddClass Class={null} />,
-      editClass: <AddClass Class={this.state.particularClass} />,
-      profile: (
-        <DeptProfile
-          {...this.props}
-          setsuccess={this.props.setsuccess}
-          setloading={this.props.setloading}
-          seterror={this.props.seterror}
-        />
-      ),
-      addSubject: <AddSubject />,
-      editSubject: <AddSubject Subject={{}} />,
-    };
-  }
-  componentDidMount() {
-    console.log(this.props.user)
-    this.props
+function DepttData(props){
+  const [comp, setcomp] = useState("dashboard");
+  const [particularClass, setparticularClass] = useState(null);
+  const [classes, setclasses] = useState([]);
+  const compEnum = {
+    dashboard: <Dashboard />,
+    addClass: <AddClass Class={null} />,
+    editClass: <AddClass Class={particularClass}/>,
+    profile: (
+      <DeptProfile
+        {...props}
+        setsuccess={props.setsuccess}
+        setloading={props.setloading}
+        seterror={props.seterror}
+      />
+    ),
+    addSubject: <AddSubject />,
+    editSubject: <AddSubject Subject={particularClass} />,
+  };
+  console.log(particularClass)
+  useEffect(() => {
+    props
       .dropDown({
-        branchCode: this.props.user.branch,
+        branchCode: props.user.branch,
       })
       .then((response) => {
         if (response.success !== false)
-          this.setState({ class: response.class });
+          setclasses(response.class)
       });
-  }
-  renderEditClass = async (cl) => {
-    var Class = await this.props.viewClass({
+  }, []);
+  const renderEditClass = async (cl) => {
+    var Class = await props.viewClass({
       branchCode: cl.branchCode,
       yearOfStart: cl.yearOfStart,
     });
+    console.log(Class)
     if (Class.error) console.error(Class.error);
-    else this.setState({ particularClass: Class.class });
+    else 
+      setparticularClass(Class.class)
+    
   };
-
-  render() {
-    return (
-      <>
-        <UserPage
-        role={2}
-          compEnum={this.compEnum}
-          comp={this.state.comp}
-          setcomp={(val) => {
-            this.setState({ comp: val });
-          }}
-          isMobile={this.props.isMobile}
-          showNav={this.props.showNav}
-          setshowNav={this.props.setshowNav}
-          userHandle="Department's Handle"
-          loading={this.props.loading}
-          success={this.props.success}
-          error={this.props.error}
-          setsuccess={this.props.setsuccess}
-          setloading={this.props.setloading}
-          seterror={this.props.seterror}
-          heading={this.props.heading}
-          setheading={this.props.setheading}
-          item={[
-            {
-              type: "menu",
-              name: "Dashboard",
-              icon: <AiOutlineDashboard />,
-              compName: "dashboard",
-            },
-            {
-              type: "menu",
-              name: "Profile",
-              icon: <CgProfile />,
-              compName: "profile",
-            },
-            {
-              type: "submenu",
-              name: "Manage Classes",
-              icon: <FcManager />,
-              data: [
-                {
-                  type: "menu",
-                  compName: "addClass",
-                  name: "Add Class",
-                },
-                {
-                  type: "submenu",
-                  name: "Edit Class",
-                  data: this.state.classes.map((Class) => {
-                    return {
-                      type: "menu",
-                      name: (
-                        <>
-                          BranchCode:{Class.branchCode}
-                          <br />
-                          yearOfStart:{Class.yearOfStart}
-                        </>
-                      ),
-                      compName: "editClass",
-                      onClick: () => {
-                        this.renderEditClass(Class);
-                      },
-                    };
-                  }),
-                },
-              ],
-            },
-            {
-              type: "submenu",
-              name: "Manage Subjects",
-              icon: <MdSubject />,
-              data: [
-                {
-                  type: "menu",
-                  compName: "addSubject",
-                  name: "Add Subject",
-                },
-                {
-                  type: "menu",
-                  compName: "editSubject",
-                  name: "Edit Subject",
-                },
-              ],
-            },
-          ]}
-        />
-      </>
-    );
-  }
+  return (
+    <>
+      <UserPage
+      role={2}
+        compEnum={compEnum}
+        comp={comp}
+        setcomp={setcomp}
+        isMobile={props.isMobile}
+        showNav={props.showNav}
+        setshowNav={props.setshowNav}
+        userHandle="Department's Handle"
+        loading={props.loading}
+        success={props.success}
+        error={props.error}
+        setsuccess={props.setsuccess}
+        setloading={props.setloading}
+        seterror={props.seterror}
+        heading={props.heading}
+        setheading={props.setheading}
+        item={[
+          {
+            type: "menu",
+            name: "Dashboard",
+            icon: <AiOutlineDashboard />,
+            compName: "dashboard",
+          },
+          {
+            type: "menu",
+            name: "Profile",
+            icon: <CgProfile />,
+            compName: "profile",
+          },
+          {
+            type: "submenu",
+            name: "Manage Classes",
+            icon: <FcManager />,
+            data: [
+              {
+                type: "menu",
+                compName: "addClass",
+                name: "Add Class",
+              },
+              {
+                type: "submenu",
+                name: "Edit Class",
+                data: classes.map((Class,idx) => {
+                  return {
+                    key:idx,
+                    type: "menu",
+                    name: (
+                      <>
+                        BranchCode:{Class.branchCode}
+                        <br />
+                        yearOfStart:{Class.yearOfStart}
+                      </>
+                    ),
+                    compName: "editClass",
+                    onClick: () => {
+                      renderEditClass(Class);
+                    },
+                  };
+                }),
+              },
+            ],
+          },
+          {
+            type: "submenu",
+            name: "Manage Subjects",
+            icon: <MdSubject />,
+            data: [
+              {
+                type: "menu",
+                compName: "addSubject",
+                name: "Add Subject",
+              },
+              {
+                type: "menu",
+                compName: "editSubject",
+                name: "Edit Subject",
+              },
+            ],
+          },
+        ]}
+      />
+    </>
+  );
 }
 export default connect(
-  (state) => {
+  ( state=> {
     return { user: state.auth.user };
-  },
+  }),
   (dispatch) => {
     return {
       dropDown: (val) => dispatch(dropDown(val)),
       viewClass: (val) => dispatch(viewClass(val)),
     };
   }
-)(DepttData);
+)(DepttData)

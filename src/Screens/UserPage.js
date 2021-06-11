@@ -19,14 +19,14 @@ import {AiOutlineLogout} from 'react-icons/ai'
 const MySubMenu = (props) => {
   return (
     <SubMenu title={props.name} icon={props.icon}>
-      {props.data.map((data) =>
+      {props.data.map((data,idx) =>
         data.type === "submenu" ? (
-          <MySubMenu
+          <MySubMenu key={idx}
             setcomp={props.setcomp}
             {...data}
           />
         ) : (
-          <MenuItem
+          <MenuItem key={idx}
             onClick={() => {
               props.setcomp(data.compName);
               if (data.onClick) data.onClick();
@@ -45,6 +45,7 @@ const UserPage = (props) => {
     return <>{props.compEnum[state]}</>;
   }
   const dispatch = useDispatch()
+  console.log(props)
   return (
     <>
       <Row>
@@ -87,9 +88,9 @@ const UserPage = (props) => {
             </SidebarHeader>
             <SidebarContent>
               <Menu iconShape="circle">
-                {props.item.map((item) => {
+                {props.item.map((item,idx) => {
                   return item.type === "menu" ? (
-                    <MenuItem
+                    <MenuItem key={idx}
                       icon={item.icon}
                       onClick={() => {
                         setcomp(item.compName);

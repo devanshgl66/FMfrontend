@@ -26,7 +26,7 @@ function App(props) {
   function handleWindowSizeChange() {
     setWidth(window.innerWidth <= 768);
   }
-  console.log(showNav);
+  // console.log(showNav);
   useEffect(() => {
     window.addEventListener("resize", handleWindowSizeChange);
     return () => {
