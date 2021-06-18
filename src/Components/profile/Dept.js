@@ -1,26 +1,27 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-pascal-case */
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { Label } from "reactstrap";
 import Avatar from "react-avatar-edit";
-import {RiDeleteBin6Line} from 'react-icons/ri'
-import {CgAdd} from 'react-icons/cg'
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { CgAdd } from "react-icons/cg";
 import { updateUser } from "../../redux/actions/authAction";
 const DeptProfile = (props) => {
   const dispatch = useDispatch();
   var { user } = useSelector((state) => state.auth);
-  const [newuser, setnewuser] = useState({ ...user,profilePic:
-    user&&user.profilePic
-      ? `data:${user.profilePic.contentType};base64,${new Buffer(
-          user.profilePic.data.data,
-          "base64"
-        ).toString("base64")}`
-      : null
-      });
+  const [newuser, setnewuser] = useState({
+    ...user,
+    profilePic:
+      user && user.profilePic
+        ? `data:${user.profilePic.contentType};base64,${new Buffer(
+            user.profilePic.data.data,
+            "base64"
+          ).toString("base64")}`
+        : null,
+  });
   const [preview, setpreview] = useState(null);
-  const [errorMessage, seterrorMessage] = useState()
+  const [errorMessage, seterrorMessage] = useState();
   if (!user) return <h1>Login first.</h1>;
 
   function onClose() {
@@ -31,21 +32,20 @@ const DeptProfile = (props) => {
     setpreview(preview);
   }
   async function updateProfile() {
-    if(newuser.branch.length===0){
-      seterrorMessage('Atleast one branch required')
+    if (newuser.branch.length === 0) {
+      seterrorMessage("Atleast one branch required");
       return;
     }
     seterrorMessage("");
     const val = { ...newuser, role: 2, profilePic: preview };
     // console.log(val)
     props.setloading(true);
-    const err=await dispatch(updateUser(val))
-    
+    const err = await dispatch(updateUser(val));
+
     props.setloading(false);
-    if (err == null){
-      props.setsuccess('Profile Updated Successfully');
-    }
-    else props.seterror(err);
+    if (err == null) {
+      props.setsuccess("Profile Updated Successfully");
+    } else props.seterror(err);
     return false;
   }
   return (
@@ -53,8 +53,8 @@ const DeptProfile = (props) => {
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          updateProfile()
-          e.preventDefault()
+          updateProfile();
+          e.preventDefault();
         }}
       >
         <Row className="form-group">
@@ -89,7 +89,7 @@ const DeptProfile = (props) => {
                     props.history.push(`/verifyAccount/${user.role}`, {
                       email: user.email,
                       role: user.role,
-                      loggedIn:true
+                      loggedIn: true,
                     });
                   }}
                 >
@@ -120,35 +120,47 @@ const DeptProfile = (props) => {
         </Form.Group>
         <Form.Group controlId="branch">
           <Form.Label>Branch</Form.Label>
-          <Button onClick={()=>{
-            var br=[...newuser.branch,'']
-            setnewuser({...newuser,branch:br})
-          }}><CgAdd/></Button>
-          {newuser.branch.map((branch,idx)=>(
-            <>
-            <Form.Control
-            type="number"
-            value={branch}
-            min={1}
-            onChange={(e) => {
-              var br=[...newuser.branch];
-              br[idx]=e.target.value
-              setnewuser({...newuser,branch:br})
+          <Button
+            onClick={() => {
+              var br = [...newuser.branch, ""];
+              setnewuser({ ...newuser, branch: br });
             }}
-            required
-            disabled={false}
-          />
-          <Button onClick={()=>{
-            var br=[...newuser.branch]
-            br.splice(idx,1)
-            setnewuser({...newuser,branch:br})
-          }}><RiDeleteBin6Line/></Button>
-          </>
-          ))}          
+          >
+            <CgAdd />
+          </Button>
+          {newuser.branch.map((branch, idx) => (
+            <>
+              <Form.Control
+                type="number"
+                value={branch}
+                min={1}
+                onChange={(e) => {
+                  var br = [...newuser.branch];
+                  br[idx] = e.target.value;
+                  setnewuser({ ...newuser, branch: br });
+                }}
+                required
+                disabled={false}
+              />
+              <Button
+                onClick={() => {
+                  var br = [...newuser.branch];
+                  br.splice(idx, 1);
+                  setnewuser({ ...newuser, branch: br });
+                }}
+              >
+                <RiDeleteBin6Line />
+              </Button>
+            </>
+          ))}
         </Form.Group>
         <Row>
           <Col>
-            {errorMessage?<div className='alert alert-danger w-25 ' >{errorMessage}</div>:<></>}
+            {errorMessage ? (
+              <div className="alert alert-danger w-25 ">{errorMessage}</div>
+            ) : (
+              <></>
+            )}
           </Col>
         </Row>
         <Row>

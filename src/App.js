@@ -7,13 +7,10 @@ import { Container } from "react-bootstrap";
 import { BrowserRouter, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import VerifyEmail from "./Components/VerifyEmail";
-import { memo, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import TeacherData from "./Screens/TeacherData";
 import DepttData from "./Screens/DepttData";
 import StudentData from "./Screens/StudentData";
-import { Component } from "react";
-import Parent from "./Components/Experiment";
-// import Temp from "./Components/Temp";
 function App(props) {
   const [error, seterror] = useState(null);
   const [loading, setloading] = useState(false);
@@ -56,18 +53,18 @@ function App(props) {
       />
     ),
     0: (
-      <Route path="/" exact>
-        <StudentData {...props} {...newprop} />
+      <Route path="/" exact render={(props) => <StudentData {...props} {...newprop} />}>
+        
       </Route>
     ),
     1: (
-      <Route path="/" exact>
-        <TeacherData {...props} {...newprop} />
+      <Route path="/" exact render={(props) => <TeacherData {...props} {...newprop} />}>
+        
       </Route>
     ),
     2: (
-      <Route path="/" exact>
-        <DepttData {...props} {...newprop} />
+      <Route path="/" exact render={(props) => <DepttData {...props} {...newprop} />}>
+        
       </Route>
     ),
   };

@@ -29,7 +29,7 @@ function DepttData(props){
       />
     ),
     addSubject: <AddSubject />,
-    editSubject: <AddSubject Subject={particularClass} />,
+    editSubject: <AddSubject Subject={{}} />,
   };
   console.log(particularClass)
   useEffect(() => {

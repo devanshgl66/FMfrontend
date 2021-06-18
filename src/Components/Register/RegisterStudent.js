@@ -189,7 +189,6 @@ function RegisterStudent(props) {
                   </Col>
                 </Row>
               </LocalForm>
-        
       </>
     );
   }
